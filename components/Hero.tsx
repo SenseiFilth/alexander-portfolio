@@ -1,0 +1,103 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { gsap } from "gsap";
+
+/**
+ * HERO SECTION — Full screen cinematic intro.
+ * Video: /public/video/hero-bg.mp4
+ */
+export default function Hero() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const subtextRef = useRef<HTMLParagraphElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const tl = gsap.timeline({ delay: 0.3 });
+
+    // Fade video in after it's ready
+    gsap.fromTo(
+      videoRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 2, ease: "power2.inOut" }
+    );
+
+    tl.fromTo(
+      headlineRef.current,
+      { y: 60, opacity: 0, filter: "blur(10px)" },
+      { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "power3.out" }
+    ).fromTo(
+      subtextRef.current,
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+      "-=0.4"
+    );
+
+    return () => { tl.kill(); };
+  }, []);
+
+  return (
+    <section
+      ref={containerRef}
+      className="relative h-screen w-full flex items-center justify-center overflow-hidden"
+    >
+      {/* Black base — visible while video loads */}
+      <div className="absolute inset-0 bg-[#050505]" />
+
+      {/* === HERO BACKGROUND VIDEO === */}
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-0"
+        src="/video/hero-bg.mp4"
+      />
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent z-[1]" />
+
+      {/* Radial vignette */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#050505_70%)] z-[2]" />
+
+      {/* Content */}
+      <div className="relative z-10 text-center px-6 max-w-5xl">
+        <h1
+          ref={headlineRef}
+          className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.9] opacity-0"
+        >
+          I Build Systems
+          <br />
+          <span className="text-red-500 text-glow-red">That Think.</span>
+        </h1>
+
+        <p
+          ref={subtextRef}
+          className="mt-6 md:mt-8 text-lg md:text-xl text-white/50 font-light tracking-wide opacity-0"
+        >
+          Web. Software. AI. Engineered for impact.
+        </p>
+      </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 1 }}
+      >
+        <span className="text-[10px] uppercase tracking-[0.3em] text-white/30">
+          Scroll
+        </span>
+        <motion.div
+          className="w-[1px] h-8 bg-gradient-to-b from-red-500 to-transparent"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </motion.div>
+    </section>
+  );
+}
