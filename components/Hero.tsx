@@ -1,30 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 /**
- * HERO SECTION — Full screen cinematic intro with scroll-synced video.
+ * HERO SECTION — Full screen cinematic intro.
  *
- * SMOOTH SCROLL-SYNCED VIDEO:
- * The hidden <video> element is the frame source. A <canvas> renders the
- * current frame, which avoids the browser's choppy keyframe-seeking when
- * setting video.currentTime directly on a visible <video>.
- *
- * How it works:
- *   1. GSAP ScrollTrigger maps scroll position → target time (scrub: 1)
- *   2. A rAF loop lerps the actual seek time toward the target (smoothing)
- *   3. video.currentTime is set to the lerped value
- *   4. requestVideoFrameCallback (or rAF fallback) paints the decoded frame
- *      onto a <canvas> at native resolution — this is what the user sees
- *
- * The lerp (linear interpolation) smoothing is the key to eliminating choppiness.
- * Instead of jumping directly to the scroll-mapped time, the actual seek time
- * glides toward it at ~10% per frame, creating fluid motion even between keyframes.
+ * VIDEO PLAYBACK — PING-PONG:
+ * Plays forward normally. When it reaches the end, it reverses frame-by-frame
+ * back to the start using requestAnimationFrame + currentTime decrement.
+ * When it reaches the start, it plays forward again. Seamless breathing loop.
  *
  * Video: /public/video/hero-bg.mp4
  */
@@ -33,78 +19,16 @@ export default function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtextRef = useRef<HTMLParagraphElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // Mutable state for the rAF render loop (avoids re-renders)
-  const scrollVideoState = useRef({
-    targetTime: 0,    // where scroll says we should be
-    currentTime: 0,   // where we're actually seeking (lerped)
-    duration: 0,
-    rafId: 0,
-    ready: false,
-  });
-
-  /**
-   * Paint the current video frame onto the canvas.
-   * Called via requestVideoFrameCallback or rAF fallback.
-   */
-  const paintFrame = useCallback(() => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    if (!video || !canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    // Match canvas internal resolution to video dimensions for crisp output
-    if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
-      canvas.width = video.videoWidth || 1920;
-      canvas.height = video.videoHeight || 1080;
-    }
-
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-  }, []);
-
-  /**
-   * Core render loop: lerp toward target time, seek video, paint canvas.
-   * Runs every frame via requestAnimationFrame.
-   */
-  const renderLoop = useCallback(() => {
-    const state = scrollVideoState.current;
-    const video = videoRef.current;
-
-    if (video && state.ready && state.duration > 0) {
-      // Lerp: glide current time toward target (0.1 = ~10% per frame = very smooth)
-      const lerpFactor = 0.1;
-      const diff = state.targetTime - state.currentTime;
-
-      // Only seek if the difference is meaningful (> 1ms)
-      if (Math.abs(diff) > 0.001) {
-        state.currentTime += diff * lerpFactor;
-
-        // Clamp to valid range
-        state.currentTime = Math.max(0, Math.min(state.duration, state.currentTime));
-
-        video.currentTime = state.currentTime;
-      }
-
-      paintFrame();
-    }
-
-    state.rafId = requestAnimationFrame(renderLoop);
-  }, [paintFrame]);
 
   useEffect(() => {
     const video = videoRef.current;
-    const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!video || !canvas || !container) return;
+    if (!video) return;
 
-    // Intro text animations (non-scroll, play once on load)
     const tl = gsap.timeline({ delay: 0.3 });
 
+    // Fade video in
     gsap.fromTo(
-      canvas,
+      video,
       { opacity: 0 },
       { opacity: 1, duration: 2, ease: "power2.inOut" }
     );
@@ -120,56 +44,73 @@ export default function Hero() {
       "-=0.4"
     );
 
-    // --- SCROLL-SYNCED VIDEO SETUP ---
+    // --- PING-PONG PLAYBACK ---
 
-    const setupScrollVideo = () => {
-      const duration = video.duration;
-      if (!duration || !isFinite(duration)) return;
+    let rafId = 0;
+    let prevTimestamp = 0;
+    let isReversing = false;
+    let disposed = false;
 
-      video.pause();
+    // Start forward playback
+    const playForward = () => {
+      if (disposed) return;
+      isReversing = false;
       video.currentTime = 0;
-
-      const state = scrollVideoState.current;
-      state.duration = duration;
-      state.targetTime = 0;
-      state.currentTime = 0;
-      state.ready = true;
-
-      // Paint the first frame immediately
-      paintFrame();
-
-      // GSAP ScrollTrigger sets the TARGET time — the rAF loop lerps toward it
-      gsap.to(state, {
-        targetTime: duration,
-        ease: "none",
-        scrollTrigger: {
-          trigger: container,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-
-      // Start the render loop
-      state.rafId = requestAnimationFrame(renderLoop);
+      video.play().catch(() => {});
     };
 
-    if (video.readyState >= 1) {
-      setupScrollVideo();
+    // Reverse via rAF: decrement currentTime each frame at 1x speed
+    const reverseStep = (timestamp: number) => {
+      if (disposed || !isReversing) return;
+
+      if (prevTimestamp === 0) prevTimestamp = timestamp;
+      const delta = (timestamp - prevTimestamp) / 1000;
+      prevTimestamp = timestamp;
+
+      const newTime = video.currentTime - delta;
+
+      if (newTime <= 0) {
+        // Reached start — switch to forward
+        video.currentTime = 0;
+        playForward();
+        return;
+      }
+
+      video.currentTime = newTime;
+      rafId = requestAnimationFrame(reverseStep);
+    };
+
+    // When forward playback reaches the end
+    const onEnded = () => {
+      if (disposed) return;
+      isReversing = true;
+      video.pause();
+      prevTimestamp = 0;
+      rafId = requestAnimationFrame(reverseStep);
+    };
+
+    video.addEventListener("ended", onEnded);
+
+    // Kick off initial forward play once video is ready
+    const startPlayback = () => {
+      if (disposed) return;
+      playForward();
+    };
+
+    if (video.readyState >= 3) {
+      startPlayback();
     } else {
-      video.addEventListener("loadedmetadata", setupScrollVideo, { once: true });
+      video.addEventListener("canplay", startPlayback, { once: true });
     }
 
     return () => {
+      disposed = true;
       tl.kill();
-      cancelAnimationFrame(scrollVideoState.current.rafId);
-      scrollVideoState.current.ready = false;
-      video.removeEventListener("loadedmetadata", setupScrollVideo);
-      ScrollTrigger.getAll().forEach((st) => {
-        if (st.trigger === container) st.kill();
-      });
+      cancelAnimationFrame(rafId);
+      video.removeEventListener("ended", onEnded);
+      video.removeEventListener("canplay", startPlayback);
     };
-  }, [paintFrame, renderLoop]);
+  }, []);
 
   return (
     <section
@@ -179,21 +120,14 @@ export default function Hero() {
       {/* Black base — visible while video loads */}
       <div className="absolute inset-0 bg-[#050505]" />
 
-      {/* Hidden video element — frame source only, never displayed */}
+      {/* === HERO BACKGROUND VIDEO === */}
       <video
         ref={videoRef}
         muted
         playsInline
         preload="auto"
-        className="hidden"
-        src="/video/hero-bg.mp4"
-      />
-
-      {/* Canvas renders the scroll-synced video frames — this is what the user sees */}
-      <canvas
-        ref={canvasRef}
         className="absolute inset-0 w-full h-full object-cover opacity-0"
-        aria-hidden="true"
+        src="/video/hero-bg.mp4"
       />
 
       {/* Gradient overlay */}
