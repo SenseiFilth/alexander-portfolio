@@ -11,28 +11,28 @@ const services = [
   {
     title: "Website Design",
     description:
-      "High-impact digital experiences designed for clarity, conversion, and brand presence.",
+      "Interfaces built with a fine arts eye — not just functional, but considered. Every pixel has a reason.",
     icon: "◆",
     direction: { x: -100, y: 0 },
   },
   {
     title: "Website Development",
     description:
-      "Fast, responsive, and scalable web systems built with modern frameworks.",
+      "Fast, responsive, production-ready. Modern frameworks, clean code, shipped on time.",
     icon: "⬡",
     direction: { x: 0, y: 100 },
   },
   {
     title: "Full Stack Applications",
     description:
-      "End-to-end software systems engineered from database to deployment.",
+      "From schema to deployment. I architect and build complete software systems end-to-end.",
     icon: "△",
     direction: { x: 100, y: 0 },
   },
   {
     title: "AI Consulting & Integration",
     description:
-      "LLM workflows, automation systems, and intelligent AI integrations for modern businesses.",
+      "I've evaluated LLMs from the inside. I know how they reason and where they break — and I'll build integrations that actually hold up in production.",
     icon: "◎",
     direction: { x: 0, y: -100 },
   },

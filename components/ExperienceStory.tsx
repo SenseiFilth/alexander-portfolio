@@ -8,22 +8,28 @@ gsap.registerPlugin(ScrollTrigger);
 
 const timeline = [
   {
-    era: "Live Event Technician",
-    insight: "Systems Thinking Under Pressure",
+    era: "Fine Arts Education",
+    insight: "Where I learned to see.",
     description:
-      "Years in live production environments where failure is not an option built an instinct for real-time systems, precision, and reliability.",
+      "I've been making art since I was five. Studying fine arts formally gave me a design vocabulary most developers don't have — and it shows in every interface I build.",
   },
   {
-    era: "Full Stack Education",
-    insight: "Software Engineering Foundation",
+    era: "Full Stack Development",
+    insight: "Where I learned to build.",
     description:
-      "Formal development across modern web architecture, APIs, databases, and scalable system design.",
+      "Formal education in modern web architecture — frontend, backend, APIs, databases, deployment. I build the full picture.",
   },
   {
-    era: "AI Evaluation (2024)",
-    insight: "Transition into AI Systems Work",
+    era: "Live Event Production",
+    insight: "Where I learned to think in systems.",
     description:
-      "Hands-on evaluation of large language models, understanding how they reason, fail, and adapt in real-world use.",
+      "Years as a union stagehand and electronics director running live events where a bad decision at the wrong moment is immediate and visible. That environment built an instinct for precision, real-time problem solving, and systems that can't afford to fail.",
+  },
+  {
+    era: "AI Evaluation & Consulting (2024–Present)",
+    insight: "Where I learned how AI actually works.",
+    description:
+      "Hands-on LLM evaluation work gave me a ground-level understanding of how these models reason, fail, and adapt. I don't just integrate AI — I understand it.",
   },
 ];
 

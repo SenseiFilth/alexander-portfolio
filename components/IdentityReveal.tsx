@@ -92,9 +92,9 @@ export default function IdentityReveal() {
           ref={titleRef}
           className="mt-6 text-base md:text-lg lg:text-xl text-white/40 font-light tracking-widest uppercase opacity-0"
         >
-          Full Stack Developer{" "}
-          <span className="text-red-500/60">•</span> AI Consultant{" "}
-          <span className="text-red-500/60">•</span> Systems Designer
+          Creative Technologist{" "}
+          <span className="text-red-500/60">·</span> Full Stack Developer{" "}
+          <span className="text-red-500/60">·</span> AI Consultant
         </p>
       </div>
     </section>

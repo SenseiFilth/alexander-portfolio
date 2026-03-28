@@ -142,16 +142,18 @@ export default function Hero() {
           ref={headlineRef}
           className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.9] opacity-0"
         >
-          I Build Systems
+          Tech is my medium.
           <br />
-          <span className="text-red-500 text-glow-red">That Think.</span>
+          <span className="text-red-500 text-glow-red">So is art.</span>
         </h1>
 
         <p
           ref={subtextRef}
           className="mt-6 md:mt-8 text-lg md:text-xl text-white/50 font-light tracking-wide opacity-0"
         >
-          Web. Software. AI. Engineered for impact.
+          Full stack developer and AI consultant with a fine arts background.
+          <br className="hidden md:block" />
+          I build things that work and look like they were actually designed.
         </p>
       </div>
 

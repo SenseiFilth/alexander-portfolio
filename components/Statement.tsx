@@ -44,22 +44,11 @@ export default function Statement() {
     return () => ctx.revert();
   }, []);
 
-  const words = [
-    "I",
-    "Don't",
-    "Just",
-    "Build",
-    "Apps.",
-  ];
-
-  const words2 = [
-    "I",
-    "Build",
-    "Systems",
-    "That",
-  ];
-
-  const highlightWords = ["Scale,", "Adapt,", "and", "Think."];
+  const line1 = ["Bringing", "your", "vision", "to", "life."];
+  const line2 = ["Part", "developer.", "Part", "designer."];
+  const line3 = ["Part", "strategist."];
+  const line4Highlight = ["I", "build", "things", "that", "are", "fast,", "intelligent,"];
+  const line5Highlight = ["and", "actually", "look", "good."];
 
   return (
     <section
@@ -70,21 +59,35 @@ export default function Statement() {
         ref={textRef}
         className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-center leading-tight max-w-5xl"
       >
-        {words.map((word) => (
+        {line1.map((word) => (
           <span key={word} className="statement-word inline-block mr-[0.3em] opacity-0">
             {word}
           </span>
         ))}
         <br className="hidden sm:block" />
-        {words2.map((word) => (
-          <span key={word} className="statement-word inline-block mr-[0.3em] opacity-0">
+        {line2.map((word, i) => (
+          <span key={`${word}-${i}`} className="statement-word inline-block mr-[0.3em] opacity-0">
+            {word}
+          </span>
+        ))}
+        {line3.map((word, i) => (
+          <span key={`${word}-${i}`} className="statement-word inline-block mr-[0.3em] opacity-0">
             {word}
           </span>
         ))}
         <br className="hidden sm:block" />
-        {highlightWords.map((word) => (
+        {line4Highlight.map((word, i) => (
           <span
-            key={word}
+            key={`${word}-${i}`}
+            className="statement-word inline-block mr-[0.3em] text-red-500 text-glow-red opacity-0"
+          >
+            {word}
+          </span>
+        ))}
+        <br className="hidden sm:block" />
+        {line5Highlight.map((word, i) => (
+          <span
+            key={`${word}-${i}`}
             className="statement-word inline-block mr-[0.3em] text-red-500 text-glow-red opacity-0"
           >
             {word}

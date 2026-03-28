@@ -45,14 +45,18 @@ export default function CallToAction() {
       className="relative min-h-screen flex items-center justify-center px-6"
     >
       <div ref={contentRef} className="text-center opacity-0">
-        <h2 className="text-4xl sm:text-6xl md:text-7xl font-black mb-8 leading-tight">
-          Let&apos;s Build Something
+        <h2 className="text-4xl sm:text-6xl md:text-7xl font-black mb-6 leading-tight">
+          Ready to build something
           <br />
-          <span className="text-red-500 text-glow-red">Powerful.</span>
+          <span className="text-red-500 text-glow-red">worth showing?</span>
         </h2>
 
+        <p className="text-white/40 font-light mb-10 text-lg max-w-md mx-auto">
+          I&apos;m available for projects and consulting. Let&apos;s talk.
+        </p>
+
         <motion.a
-          href="mailto:hello@alexandermb.com"
+          href="mailto:brown.alexander10133@gmail.com"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.98 }}
           className="inline-block px-10 py-4 bg-red-500 text-white font-bold text-lg rounded-full
@@ -61,10 +65,6 @@ export default function CallToAction() {
         >
           Work With Me
         </motion.a>
-
-        <p className="mt-8 text-white/20 text-sm tracking-widest uppercase">
-          Available for projects &amp; consulting
-        </p>
       </div>
 
       {/* Footer */}
