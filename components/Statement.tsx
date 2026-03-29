@@ -1,47 +1,29 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef, useEffect, useState } from "react";
 
 /**
- * STATEMENT — Full screen bold impact text with dramatic slow fade-in.
+ * STATEMENT — Full screen bold impact text with staggered reveal on scroll into view.
+ * Uses IntersectionObserver instead of GSAP ScrollTrigger for reliability after pinned sections.
  */
 export default function Statement() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLHeadingElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
-    const text = textRef.current;
-    if (!section || !text) return;
+    if (!section) return;
 
-    const ctx = gsap.context(() => {
-      // Split the text into words for staggered reveal
-      const words = text.querySelectorAll(".statement-word");
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+        else setIsVisible(false);
+      },
+      { threshold: 0.2 }
+    );
 
-      gsap.fromTo(
-        words,
-        { opacity: 0, y: 30, filter: "blur(6px)" },
-        {
-          opacity: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 0.8,
-          stagger: 0.12,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 50%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    }, section);
-
-    return () => ctx.revert();
+    observer.observe(section);
+    return () => observer.disconnect();
   }, []);
 
   const line1 = ["Bringing", "your", "vision", "to", "life."];
@@ -50,49 +32,42 @@ export default function Statement() {
   const line4Highlight = ["I", "build", "things", "that", "are", "fast,", "intelligent,"];
   const line5Highlight = ["and", "actually", "look", "good."];
 
+  let wordIndex = 0;
+
+  const renderWord = (word: string, highlight: boolean) => {
+    const i = wordIndex++;
+    return (
+      <span
+        key={`${word}-${i}`}
+        className={`inline-block mr-[0.3em] transition-all duration-700 ease-out ${
+          highlight ? "text-red-500 text-glow-red" : ""
+        }`}
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0px)" : "translateY(30px)",
+          filter: isVisible ? "blur(0px)" : "blur(6px)",
+          transitionDelay: `${i * 80}ms`,
+        }}
+      >
+        {word}
+      </span>
+    );
+  };
+
   return (
     <section
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center px-6"
     >
-      <h2
-        ref={textRef}
-        className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-center leading-tight max-w-5xl"
-      >
-        {line1.map((word) => (
-          <span key={word} className="statement-word inline-block mr-[0.3em] opacity-0">
-            {word}
-          </span>
-        ))}
+      <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-center leading-tight max-w-5xl">
+        {line1.map((w) => renderWord(w, false))}
         <br className="hidden sm:block" />
-        {line2.map((word, i) => (
-          <span key={`${word}-${i}`} className="statement-word inline-block mr-[0.3em] opacity-0">
-            {word}
-          </span>
-        ))}
-        {line3.map((word, i) => (
-          <span key={`${word}-${i}`} className="statement-word inline-block mr-[0.3em] opacity-0">
-            {word}
-          </span>
-        ))}
+        {line2.map((w) => renderWord(w, false))}
+        {line3.map((w) => renderWord(w, false))}
         <br className="hidden sm:block" />
-        {line4Highlight.map((word, i) => (
-          <span
-            key={`${word}-${i}`}
-            className="statement-word inline-block mr-[0.3em] text-red-500 text-glow-red opacity-0"
-          >
-            {word}
-          </span>
-        ))}
+        {line4Highlight.map((w) => renderWord(w, true))}
         <br className="hidden sm:block" />
-        {line5Highlight.map((word, i) => (
-          <span
-            key={`${word}-${i}`}
-            className="statement-word inline-block mr-[0.3em] text-red-500 text-glow-red opacity-0"
-          >
-            {word}
-          </span>
-        ))}
+        {line5Highlight.map((w) => renderWord(w, true))}
       </h2>
     </section>
   );

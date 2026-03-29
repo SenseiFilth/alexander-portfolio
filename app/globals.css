@@ -53,7 +53,7 @@ main {
   color: var(--color-white);
 }
 
-/* Noise overlay texture */
+/* Noise overlay texture — GPU accelerated */
 .noise-overlay {
   position: fixed;
   top: -50%;
@@ -65,6 +65,8 @@ main {
   pointer-events: none;
   z-index: 9999;
   animation: grain 0.5s steps(1) infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* Glow effects */

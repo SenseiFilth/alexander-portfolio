@@ -1,42 +1,30 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 /**
  * CALL TO ACTION — Final section with pulsing glow button.
+ * Uses IntersectionObserver for reliable reveal after pinned sections.
  */
 export default function CallToAction() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        contentRef.current,
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 60%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    }, section);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+        else setIsVisible(false);
+      },
+      { threshold: 0.2 }
+    );
 
-    return () => ctx.revert();
+    observer.observe(section);
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -44,7 +32,13 @@ export default function CallToAction() {
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center px-6"
     >
-      <div ref={contentRef} className="text-center opacity-0">
+      <div
+        className="text-center transition-all duration-1000 ease-out"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0px)" : "translateY(40px)",
+        }}
+      >
         <h2 className="text-4xl sm:text-6xl md:text-7xl font-black mb-6 leading-tight">
           Ready to build something
           <br />
