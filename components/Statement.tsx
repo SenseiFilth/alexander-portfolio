@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 
 /**
- * STATEMENT — Tighter, punchier 3-line bold statement.
+ * STATEMENT — Two-line bold impact statement.
  * Uses IntersectionObserver for reliable post-pin reveal.
  */
 export default function Statement() {
@@ -27,9 +27,8 @@ export default function Statement() {
   }, []);
 
   const lines: { words: string[]; red: boolean }[] = [
-    { words: ["Vision,", "built."], red: false },
-    { words: ["Developer.", "Designer.", "Strategist."], red: false },
-    { words: ["Fast.", "Intelligent.", "Beautiful", "by", "design."], red: true },
+    { words: ["Vision", "built."], red: false },
+    { words: ["Beautiful", "by", "design."], red: true },
   ];
 
   let wordIndex = 0;
@@ -37,9 +36,9 @@ export default function Statement() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center px-6"
+      className="relative py-40 flex items-center justify-center px-6"
     >
-      <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-center leading-tight max-w-5xl">
+      <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-center leading-[1.05] max-w-5xl">
         {lines.map((line, li) => (
           <span key={li} className="block">
             {line.words.map((word) => {
@@ -47,14 +46,14 @@ export default function Statement() {
               return (
                 <span
                   key={`${word}-${i}`}
-                  className={`inline-block mr-[0.25em] transition-all duration-700 ease-out${
+                  className={`inline-block mr-[0.2em] transition-all duration-700 ease-out${
                     line.red ? " text-red-500 text-glow-red" : ""
                   }`}
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? "translateY(0px)" : "translateY(30px)",
                     filter: isVisible ? "blur(0px)" : "blur(6px)",
-                    transitionDelay: `${i * 90}ms`,
+                    transitionDelay: `${i * 100}ms`,
                   }}
                 >
                   {word}

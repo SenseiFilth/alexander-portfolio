@@ -9,41 +9,6 @@ import { products } from "@/lib/products";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/** Inline SVG paint splat — white, used as backdrop behind products */
-function PaintSplat({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 800 800"
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <g fill="white" fillOpacity="0.08">
-        {/* Main splat body */}
-        <ellipse cx="400" cy="400" rx="320" ry="280" />
-        {/* Drips and splashes */}
-        <ellipse cx="200" cy="300" rx="80" ry="60" transform="rotate(-15 200 300)" />
-        <ellipse cx="600" cy="280" rx="90" ry="55" transform="rotate(20 600 280)" />
-        <ellipse cx="300" cy="580" rx="70" ry="45" transform="rotate(-10 300 580)" />
-        <ellipse cx="520" cy="560" rx="85" ry="50" transform="rotate(12 520 560)" />
-        <ellipse cx="150" cy="430" rx="55" ry="35" transform="rotate(-25 150 430)" />
-        <ellipse cx="660" cy="420" rx="65" ry="40" transform="rotate(18 660 420)" />
-        {/* Small droplets */}
-        <circle cx="120" cy="250" r="20" />
-        <circle cx="680" cy="220" r="18" />
-        <circle cx="250" cy="650" r="15" />
-        <circle cx="560" cy="640" r="22" />
-        <circle cx="100" cy="500" r="12" />
-        <circle cx="700" cy="500" r="16" />
-        {/* Finger drips */}
-        <ellipse cx="350" cy="680" rx="15" ry="40" />
-        <ellipse cx="450" cy="690" rx="12" ry="35" />
-        <ellipse cx="250" cy="160" rx="14" ry="30" transform="rotate(15 250 160)" />
-        <ellipse cx="550" cy="150" rx="16" ry="28" transform="rotate(-12 550 150)" />
-      </g>
-    </svg>
-  );
-}
 
 export default function ShopSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -70,7 +35,7 @@ export default function ShopSection() {
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: `+=${totalProducts * 100}vh`,
+        end: `+=${totalProducts * 40}vh`,
         pin: pinRef.current,
         scrub: 0.5,
         onUpdate: (self) => {
@@ -124,7 +89,7 @@ export default function ShopSection() {
   return (
     <section ref={sectionRef} className="relative bg-[#050505]">
       <div
-        style={{ height: isMobile ? "auto" : `${products.length * 100}vh` }}
+        style={{ height: isMobile ? "auto" : `${products.length * 40}vh` }}
       >
         <div
           ref={pinRef}
@@ -154,13 +119,8 @@ export default function ShopSection() {
 
           {/* Product + info */}
           <div className="flex-1 flex flex-col items-center justify-center pt-20 pb-24 px-4">
-            {/* Product image with paint splat */}
+            {/* Product image */}
             <div className="flex-1 flex items-center justify-center min-h-0 relative">
-              {/* Paint splat behind product */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <PaintSplat className="w-[120%] h-[120%] max-w-[600px] max-h-[600px]" />
-              </div>
-
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`${product.id}-${showBack ? "back" : "front"}`}
