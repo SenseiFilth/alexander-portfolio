@@ -11,13 +11,13 @@ const timeline = [
     era: "Fine Arts Education",
     insight: "Where I learned to see.",
     description:
-      "I've been making art since I was five. Studying fine arts formally gave me a design vocabulary most developers don't have — and it shows in every interface I build.",
+      "Rooted in years of artistic practice, this foundation translates into interfaces defined by precision, hierarchy, and aesthetic control.",
   },
   {
     era: "Full Stack Development",
     insight: "Where I learned to build.",
     description:
-      "Formal education in modern web architecture — frontend, backend, APIs, databases, deployment. I build the full picture.",
+      "Built on modern web architecture—frontend, backend, APIs, databases, and deployment—delivering cohesive, scalable applications from end to end.",
   },
   {
     era: "Live Event Production",
@@ -29,7 +29,7 @@ const timeline = [
     era: "AI Evaluation & Consulting (2024–Present)",
     insight: "Where I learned how AI actually works.",
     description:
-      "Hands-on LLM evaluation work gave me a ground-level understanding of how these models reason, fail, and adapt. I don't just integrate AI — I understand it.",
+      "Hands-on LLM evaluation built a ground-level understanding of how models reason, fail, and adapt—informing integrations that are stable, intentional, and production-ready.",
   },
 ];
 

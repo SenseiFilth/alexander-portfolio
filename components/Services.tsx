@@ -25,14 +25,14 @@ const services = [
   {
     title: "Full Stack Applications",
     description:
-      "From schema to deployment. I architect and build complete software systems end-to-end.",
+      "From schema to deployment—end-to-end software systems, architected and built for scale.",
     icon: "△",
     direction: { x: 100, y: 0 },
   },
   {
     title: "AI Consulting & Integration",
     description:
-      "I've evaluated LLMs from the inside. I know how they reason and where they break — and I'll build integrations that actually hold up in production.",
+      "Production-grade AI integrations, grounded in how LLMs actually reason—and where they break.",
     icon: "◎",
     direction: { x: 0, y: -100 },
   },

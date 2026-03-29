@@ -96,7 +96,7 @@ export default function Capabilities() {
           ref={headingRef}
           className="text-3xl md:text-5xl font-black mb-16 px-6 md:px-20 opacity-0"
         >
-          Tech <span className="text-red-500">Stack</span>
+          Technical <span className="text-red-500">Stack</span>
         </h2>
 
         <div ref={trackRef} className="flex items-center gap-8 px-6 md:px-20 will-change-transform">
