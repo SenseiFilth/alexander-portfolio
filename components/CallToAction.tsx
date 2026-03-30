@@ -4,8 +4,9 @@ import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 /**
- * CALL TO ACTION — Final section with pulsing glow button.
- * Uses IntersectionObserver for reliable reveal after pinned sections.
+ * CALL TO ACTION — Final section.
+ * "Work With Me" scrolls back up to the contact cards section.
+ * Footer has Musashi quote above trademark.
  */
 export default function CallToAction() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -26,6 +27,18 @@ export default function CallToAction() {
     observer.observe(section);
     return () => observer.disconnect();
   }, []);
+
+  const scrollToContact = () => {
+    // IdentityReveal is the 2nd section (index 1) — scroll to its top
+    // so the sticky contact cards are immediately visible and centered
+    const sections = document.querySelectorAll("section");
+    const contactSection = sections[1];
+    if (contactSection) {
+      const rect = contactSection.getBoundingClientRect();
+      const targetY = window.scrollY + rect.top;
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+    }
+  };
 
   return (
     <section
@@ -49,23 +62,28 @@ export default function CallToAction() {
           I&apos;m available for projects and consulting. Let&apos;s talk.
         </p>
 
-        <motion.a
-          href="mailto:brown.alexander10133@gmail.com"
+        <motion.button
+          onClick={scrollToContact}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.98 }}
           className="inline-block px-10 py-4 bg-red-500 text-white font-bold text-lg rounded-full
-                     animate-pulse-glow transition-all duration-300
+                     animate-pulse-glow transition-all duration-300 cursor-pointer
                      hover:bg-red-600 hover:shadow-[0_0_40px_rgba(255,42,42,0.5)]"
         >
           Work With Me
-        </motion.a>
+        </motion.button>
       </div>
 
       {/* Footer */}
-      <div className="absolute bottom-8 left-0 right-0 text-center">
+      <div className="absolute bottom-8 left-0 right-0 text-center flex flex-col items-center gap-2">
+        <p
+          className="text-white/15 text-xs tracking-wider italic"
+          style={{ fontStyle: "italic" }}
+        >
+          &ldquo;Inside, I am infinite.&rdquo; — Miyamoto Musashi
+        </p>
         <p className="text-white/10 text-xs tracking-wider">
-          &copy; {new Date().getFullYear()} Alexander McKinnon-Brown. All rights
-          reserved.
+          &copy; {new Date().getFullYear()} Alexander McKinnon-Brown. All rights reserved.
         </p>
       </div>
     </section>

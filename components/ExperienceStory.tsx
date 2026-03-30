@@ -23,7 +23,7 @@ const timeline = [
     era: "Live Event Production",
     insight: "Where I learned to think in systems.",
     description:
-      "Years as a union stagehand and electronics director running live events where a bad decision at the wrong moment is immediate and visible. That environment built an instinct for precision, real-time problem solving, and systems that can't afford to fail.",
+      "Years as a union stagehand and electronics director taught me precision under pressure, where every decision is immediate and visible. That environment built strong real-time problem solving and a focus on systems that cannot fail.",
   },
   {
     era: "AI Evaluation & Consulting (2024–Present)",
