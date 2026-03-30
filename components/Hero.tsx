@@ -16,12 +16,8 @@ const ALL_FONTS: Font[] = [
   { family: "RushZone", weight: 400 },      // bold impact display
 ];
 
-const INITIAL_DELAY = 2000;
-const CYCLE_DURATION = 3200;   // slightly longer cycle for 4-font set
-const HOLD_DURATION = 3000;    // rest on CS a beat longer
-const TICK_MIN = 110;          // slower — more deliberate premium feel
-const TICK_MAX = 200;
-const SETTLE_STAGGER = 180;
+const FONT_THROTTLE = 130;  // min ms between font changes while scrolling
+const SCROLL_STOP = 250;    // ms of inactivity before returning to CS
 
 // Pick 3 distinct fonts from the pool
 function pick3(): [Font, Font, Font] {
@@ -86,47 +82,52 @@ export default function Hero() {
 
   const [cycling, setCycling] = useState(false);
   const [fonts, setFonts] = useState<[Font, Font, Font]>([CS_FONT, CS_FONT, CS_FONT]);
+  const cyclingRef = useRef(false);
 
-  // ART decipher loop
+  // Scroll-driven ART decipher — activates on any scroll/wheel input,
+  // returns to CS font after the user stops scrolling.
   useEffect(() => {
     let mounted = true;
-    const timers: ReturnType<typeof setTimeout>[] = [];
+    let stopTimer: ReturnType<typeof setTimeout> | null = null;
+    let lastChange = 0;
 
-    const T = (fn: () => void, ms: number) => {
-      const id = setTimeout(() => { if (mounted) fn(); }, ms);
-      timers.push(id);
-    };
-
-    function runCycle() {
+    function onScrollActivity() {
       if (!mounted) return;
-      setCycling(true);
 
-      let elapsed = 0;
-      function tick() {
-        if (!mounted) return;
-        setFonts(pick3());
-        const delay = TICK_MIN + Math.random() * (TICK_MAX - TICK_MIN);
-        elapsed += delay;
-        if (elapsed < CYCLE_DURATION) {
-          T(tick, delay);
-        } else {
-          // Sequential settle back to CS
-          setCycling(false);
-          T(() => setFonts(([, r, t]) => [CS_FONT, r, t]), 0);
-          T(() => setFonts(([a, , t]) => [a, CS_FONT, t]), SETTLE_STAGGER);
-          T(() => setFonts(([a, r]) => [a, r, CS_FONT]), SETTLE_STAGGER * 2);
-          T(runCycle, SETTLE_STAGGER * 2 + HOLD_DURATION);
-        }
+      // Flip into cycling mode on first scroll event
+      if (!cyclingRef.current) {
+        cyclingRef.current = true;
+        setCycling(true);
       }
 
-      tick();
+      // Throttle font swaps so they read as a scramble, not a blur
+      const now = Date.now();
+      if (now - lastChange > FONT_THROTTLE) {
+        setFonts(pick3());
+        lastChange = now;
+      }
+
+      // Debounce: settle back to CS after scroll goes quiet
+      if (stopTimer) clearTimeout(stopTimer);
+      stopTimer = setTimeout(() => {
+        if (!mounted) return;
+        cyclingRef.current = false;
+        setCycling(false);
+        setFonts([CS_FONT, CS_FONT, CS_FONT]);
+      }, SCROLL_STOP);
     }
 
-    T(runCycle, INITIAL_DELAY);
+    // wheel catches intent before the page moves; scroll catches actual movement
+    window.addEventListener("scroll", onScrollActivity, { passive: true });
+    window.addEventListener("wheel",  onScrollActivity, { passive: true });
+    window.addEventListener("touchmove", onScrollActivity, { passive: true });
 
     return () => {
       mounted = false;
-      timers.forEach(clearTimeout);
+      window.removeEventListener("scroll", onScrollActivity);
+      window.removeEventListener("wheel",  onScrollActivity);
+      window.removeEventListener("touchmove", onScrollActivity);
+      if (stopTimer) clearTimeout(stopTimer);
     };
   }, []);
 
