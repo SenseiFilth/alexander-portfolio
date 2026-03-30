@@ -215,7 +215,7 @@ export default function Services() {
   return (
     <section ref={sectionRef} className="relative py-32 px-6 md:px-12 lg:px-20">
       <div className="max-w-6xl mx-auto">
-        <h2 ref={headingRef} className="text-3xl md:text-5xl font-black mb-16 opacity-0">
+        <h2 ref={headingRef} className="font-cs text-3xl md:text-5xl font-black mb-16 opacity-0 text-center">
           What I <span className="text-red-500">Build</span>
         </h2>
 

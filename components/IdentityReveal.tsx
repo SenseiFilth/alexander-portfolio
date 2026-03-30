@@ -289,12 +289,12 @@ export default function IdentityReveal() {
 
       tl.fromTo(
         nameRef.current,
-        { y: 80, opacity: 0, filter: "blur(8px)" },
-        { y: 0, opacity: 1, filter: "blur(0px)", duration: 1, ease: "power3.out" }
+        { y: 80, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 1, ease: "power3.out" }
       ).fromTo(
         titleRef.current,
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+        { y: 40, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.8, ease: "power2.out" },
         "-=0.3"
       );
     }, section);
@@ -318,7 +318,7 @@ export default function IdentityReveal() {
     <section
       ref={sectionRef}
       className="relative bg-[#050505]"
-      style={{ minHeight: "180vh" }}
+      style={{ minHeight: "120vh" }}
     >
       {/* Sticky container — cards stay in view through the dwell zone */}
       <div
@@ -340,12 +340,12 @@ export default function IdentityReveal() {
           {/* Name */}
           <h2
             ref={nameRef}
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight opacity-0"
+            className="font-cs text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight opacity-0"
           >
             Alexander
             <br />
             <span className="text-red-500 whitespace-nowrap">
-              McKinnon-Brown
+              McKinnon<span style={{ fontFamily: "Inter, sans-serif", letterSpacing: "-0.02em" }}>-</span>Brown
               <motion.span
                 className="inline-block ml-1"
                 initial={{ opacity: 0 }}

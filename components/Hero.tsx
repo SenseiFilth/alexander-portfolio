@@ -67,7 +67,7 @@ export default function Hero() {
         playsInline
         loop
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover opacity-0"
+        className="absolute inset-0 w-full h-full object-cover opacity-0 scale-[0.85] md:scale-100"
         src="/video/hero-bg.mp4"
       />
 
@@ -77,18 +77,18 @@ export default function Hero() {
       <div className="relative z-10 text-center px-6 max-w-5xl">
         <h1
           ref={headlineRef}
-          className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.9] opacity-0"
+          className="font-cs text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.9] opacity-0"
         >
-          Technology is my medium.
+          Technology is my medium
           <br />
-          <span className="text-red-500 text-glow-red">So is art.</span>
+          <span className="text-red-500 text-glow-red">So is art</span>
         </h1>
 
         <p
           ref={subtextRef}
           className="mt-6 md:mt-8 text-lg md:text-xl text-white/50 font-light tracking-wide opacity-0"
         >
-          Full stack developer and AI consultant with a fine arts background.
+          Full stack developer and AI consultant with a fine arts background
           <br className="hidden md:block" />
         </p>
       </div>

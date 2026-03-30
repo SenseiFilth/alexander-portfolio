@@ -52,14 +52,14 @@ export default function CallToAction() {
           transform: isVisible ? "translateY(0px)" : "translateY(40px)",
         }}
       >
-        <h2 className="text-4xl sm:text-6xl md:text-7xl font-black mb-6 leading-tight">
-          Ready to build something
+        <h2 className="font-cs text-4xl sm:text-6xl md:text-7xl font-black mb-6 leading-tight">
+          Build Something That Actually
           <br />
-          <span className="text-red-500 text-glow-red">worth showing?</span>
+          <span className="text-red-500 text-glow-red">Stands Out</span>
         </h2>
 
-        <p className="text-white/40 font-light mb-10 text-lg max-w-md mx-auto">
-          I&apos;m available for projects and consulting. Let&apos;s talk.
+        <p className="text-white/40 font-light mb-10 text-lg max-w-md mx-auto tracking-widest uppercase">
+          Precision&nbsp;&nbsp;·&nbsp;&nbsp;Performance&nbsp;&nbsp;·&nbsp;&nbsp;Presence
         </p>
 
         <motion.button
@@ -70,7 +70,7 @@ export default function CallToAction() {
                      animate-pulse-glow transition-all duration-300 cursor-pointer
                      hover:bg-red-600 hover:shadow-[0_0_40px_rgba(255,42,42,0.5)]"
         >
-          Work With Me
+          Start Your Project
         </motion.button>
       </div>
 

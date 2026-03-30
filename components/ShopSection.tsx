@@ -35,7 +35,7 @@ export default function ShopSection() {
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: `+=${totalProducts * 40}vh`,
+        end: `+=${totalProducts * 30}vh`,
         pin: pinRef.current,
         scrub: 0.5,
         onUpdate: (self) => {
@@ -89,7 +89,7 @@ export default function ShopSection() {
   return (
     <section ref={sectionRef} className="relative bg-[#050505]">
       <div
-        style={{ height: isMobile ? "auto" : `${products.length * 40}vh` }}
+        style={{ height: isMobile ? "auto" : `${products.length * 30}vh` }}
       >
         <div
           ref={pinRef}
@@ -105,16 +105,6 @@ export default function ShopSection() {
               FiLTH Customs
             </h2>
             <div className="w-12 h-[1px] bg-red-500/50" />
-          </div>
-
-          {/* Progress indicator */}
-          <div className="absolute top-8 right-8 z-10 flex items-baseline gap-1">
-            <span className="text-4xl font-black text-white tabular-nums">
-              {String(activeIndex + 1).padStart(2, "0")}
-            </span>
-            <span className="text-sm text-white/30 font-light">
-              / {String(products.length).padStart(2, "0")}
-            </span>
           </div>
 
           {/* Product + info */}
@@ -242,18 +232,6 @@ export default function ShopSection() {
               ))}
             </div>
           )}
-
-          {/* Store link */}
-          <div className="absolute bottom-8 left-8 z-10">
-            <a
-              href="https://filth-customs.creator-spring.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[10px] tracking-[0.3em] uppercase text-white/20 hover:text-red-500/60 transition-colors duration-300"
-            >
-              View Full Store →
-            </a>
-          </div>
 
           {/* Scroll hint — desktop */}
           {!isMobile && activeIndex === 0 && (
