@@ -5,32 +5,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
 
 @font-face {
-  font-family: "Orbitron";
-  src: url("/fonts/Orbitron-Variable.ttf") format("truetype");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Blanka";
-  src: url("/fonts/Blanka.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: "CloisterBlack";
   src: url("/fonts/CloisterBlack.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "LowresPixel";
-  src: url("/fonts/LowresPixel.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -45,8 +21,16 @@
 }
 
 @font-face {
-  font-family: "Yiroglyphics";
-  src: url("/fonts/Yiroglyphics.ttf") format("truetype");
+  font-family: "PrimeDrips";
+  src: url("/fonts/PrimeDrips.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "RushZone";
+  src: url("/fonts/RushZone.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -75,6 +59,24 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* ── Hero blinking cursor ───────────────────────────────────────────────── */
+@keyframes heroCursorBlink {
+  0%, 49%  { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.hero-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.75em;
+  background-color: #DC2626;
+  vertical-align: text-bottom;
+  margin-left: 0.08em;
+  animation: heroCursorBlink 1.1s steps(1) infinite;
+  animation-delay: 1.5s;
+  opacity: 0; /* hidden until first blink cycle starts */
 }
 
 html {

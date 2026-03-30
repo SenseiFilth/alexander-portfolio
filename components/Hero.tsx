@@ -8,22 +8,20 @@ interface Font { family: string; weight: number; }
 
 const CS_FONT: Font = { family: "CounterStrike", weight: 400 };
 
-// All 6 local fonts — CS is resting state only
+// 4 local fonts — CS is the resting state only
 const ALL_FONTS: Font[] = [
-  { family: "Blanka", weight: 400 },        // sci-fi stencil void
-  { family: "Orbitron", weight: 900 },      // space HUD black
   { family: "CloisterBlack", weight: 400 }, // blackletter gothic
-  { family: "LowresPixel", weight: 400 },   // pixel terminal
   { family: "Ryga", weight: 400 },          // geometric futurist
-  { family: "Yiroglyphics", weight: 400 },  // deconstructed glyphs
+  { family: "PrimeDrips", weight: 400 },    // drip display
+  { family: "RushZone", weight: 400 },      // bold impact display
 ];
 
 const INITIAL_DELAY = 2000;
-const CYCLE_DURATION = 3000;
-const HOLD_DURATION = 2800;
-const TICK_MIN = 70;
-const TICK_MAX = 140;
-const SETTLE_STAGGER = 180; // ms between each letter returning to CS
+const CYCLE_DURATION = 3200;   // slightly longer cycle for 4-font set
+const HOLD_DURATION = 3000;    // rest on CS a beat longer
+const TICK_MIN = 110;          // slower — more deliberate premium feel
+const TICK_MAX = 200;
+const SETTLE_STAGGER = 180;
 
 // Pick 3 distinct fonts from the pool
 function pick3(): [Font, Font, Font] {
@@ -39,30 +37,34 @@ interface LetterProps {
 
 function AnimatedLetter({ letter, font, cycling }: LetterProps) {
   return (
-    // Outer: fixed-size inline-block — permanently holds its space in the line flow.
-    // No font change inside can alter this box's dimensions.
+    // Outer: fixed-size inline-block. Bottom edge = line baseline (verticalAlign baseline).
     <span
       style={{
         display: "inline-block",
         width: "0.65em",
         height: "0.82em",
         position: "relative",
-        verticalAlign: "top",
+        verticalAlign: "baseline",
         overflow: "visible",
       }}
     >
-      {/* Inner: absolutely positioned — centered in the box, out of flow entirely */}
+      {/*
+        Inner: absolutely positioned.
+        CS font needs bottom:-0.2em because the text baseline sits ~0.2em
+        above the span's bottom edge (descender space in the em square).
+        Animation fonts don't need to be baseline-perfect — they're brief.
+      */}
       <span
         style={{
           position: "absolute",
+          bottom: font.family === "CounterStrike" ? "-0.2em" : "0",
           left: "50%",
-          top: "50%",
-          transform: "translate(-50%, -50%)",
+          transform: "translateX(-50%)",
           whiteSpace: "nowrap",
           lineHeight: 1,
           fontFamily: `"${font.family}", sans-serif`,
           fontWeight: font.weight,
-          transition: cycling ? "none" : "font-family 0.25s ease",
+          transition: cycling ? "none" : "font-family 0.25s ease, bottom 0.25s ease",
         }}
       >
         {letter}
@@ -199,6 +201,10 @@ export default function Hero() {
             <AnimatedLetter letter="a" font={fonts[0]} cycling={cycling} />
             <AnimatedLetter letter="r" font={fonts[1]} cycling={cycling} />
             <AnimatedLetter letter="t" font={fonts[2]} cycling={cycling} />
+            <span
+              className="hero-cursor"
+              aria-hidden="true"
+            />
           </span>
         </h1>
 

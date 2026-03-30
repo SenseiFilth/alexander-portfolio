@@ -317,19 +317,6 @@ export default function IdentityReveal() {
             <br />
             <span className="text-red-500 whitespace-nowrap">
               McKinnon<span style={{ fontFamily: "Inter, sans-serif", letterSpacing: "-0.02em" }}>-</span>Brown
-              <motion.span
-                className="inline-block ml-1"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1, 1, 0] }}
-                transition={{
-                  duration: 1.1,
-                  repeat: Infinity,
-                  ease: "steps(1)",
-                  delay: 0.15 + 3 * 0.13 + 0.6,
-                }}
-                style={{ color: "#DC2626" }}
-                aria-hidden="true"
-              >|</motion.span>
             </span>
           </h2>
 
