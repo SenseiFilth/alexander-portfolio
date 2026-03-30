@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bodoni+Moda:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@700&family=Playfair+Display:wght@700&family=Space+Grotesk:wght@700&family=Barlow+Condensed:wght@800&family=Instrument+Serif&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Blanka&family=Bungee+Shade&family=Orbitron:wght@900&family=UnifrakturMaguntia&family=VT323&family=Rubik+Glitch&display=swap");
 
 @font-face {
   font-family: "CounterStrike";
