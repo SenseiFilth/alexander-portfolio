@@ -46,7 +46,7 @@ const CARDS = [
   },
   {
     label: "Upwork",
-    value: "Hire Me",
+    value: "Let's Work",
     href: "https://www.upwork.com/freelancers/~012c48ad6ef84c61fc",
     bg: "/contact-bg/card-3.png",
     icon: (

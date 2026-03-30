@@ -102,7 +102,7 @@ export default function ShopSection() {
           {/* Section header */}
           <div className="absolute top-8 left-0 right-0 z-10 flex flex-col items-center">
             <h2 className="text-sm tracking-[0.4em] uppercase text-white/40 mb-2">
-              FiLTH Customs
+              My Shop
             </h2>
             <div className="w-12 h-[1px] bg-red-500/50" />
           </div>

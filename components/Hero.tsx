@@ -71,7 +71,7 @@ export default function Hero() {
         src="/video/hero-bg.mp4"
       />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 md:via-[#050505]/60 to-transparent z-[1]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#050505_70%)] z-[2]" />
 
       <div className="relative z-10 text-center px-6 max-w-5xl">
