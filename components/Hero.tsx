@@ -4,55 +4,40 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 
-const CYCLE_FONTS = [
+interface Font { family: string; weight: number; }
+
+const CS_FONT: Font = { family: "CounterStrike", weight: 400 };
+
+// All 6 fonts — CS included so it can appear mid-cycle
+const ALL_FONTS: Font[] = [
   { family: "Sora", weight: 700 },
   { family: "Orbitron", weight: 700 },
   { family: "Exo 2", weight: 700 },
   { family: "Bebas Neue", weight: 400 },
   { family: "Audiowide", weight: 400 },
+  CS_FONT,
 ];
-const CS_FONT = { family: "CounterStrike", weight: 400 };
 
-const INITIAL_DELAY = 2000;   // wait after load before first cycle
-const CYCLE_DURATION = 2200;  // how long the rapid randomize phase lasts
-const HOLD_DURATION = 3000;   // how long to rest on CS before next cycle
-const TICK_MIN = 70;          // fastest tick (ms)
-const TICK_MAX = 140;         // slowest tick (ms)
+const INITIAL_DELAY = 2000;
+const CYCLE_DURATION = 3000;
+const HOLD_DURATION = 2800;
+const TICK_MIN = 70;
+const TICK_MAX = 140;
+const SETTLE_STAGGER = 180; // ms between each letter returning to CS
 
-interface AnimatedLetterProps {
+// Pick 3 distinct fonts from the pool
+function pick3(): [Font, Font, Font] {
+  const pool = [...ALL_FONTS].sort(() => Math.random() - 0.5);
+  return [pool[0], pool[1], pool[2]];
+}
+
+interface LetterProps {
   letter: string;
+  font: Font;
   cycling: boolean;
 }
 
-function AnimatedLetter({ letter, cycling }: AnimatedLetterProps) {
-  const [font, setFont] = useState(CS_FONT);
-  const mountedRef = useRef(true);
-
-  useEffect(() => {
-    mountedRef.current = true;
-    return () => { mountedRef.current = false; };
-  }, []);
-
-  useEffect(() => {
-    if (!cycling) {
-      setFont(CS_FONT);
-      return;
-    }
-
-    let timer: ReturnType<typeof setTimeout>;
-
-    function tick() {
-      if (!mountedRef.current) return;
-      const idx = Math.floor(Math.random() * CYCLE_FONTS.length);
-      setFont(CYCLE_FONTS[idx]);
-      const delay = TICK_MIN + Math.random() * (TICK_MAX - TICK_MIN);
-      timer = setTimeout(tick, delay);
-    }
-
-    tick();
-    return () => clearTimeout(timer);
-  }, [cycling]);
-
+function AnimatedLetter({ letter, font, cycling }: LetterProps) {
   return (
     <span
       style={{
@@ -60,7 +45,7 @@ function AnimatedLetter({ letter, cycling }: AnimatedLetterProps) {
         minWidth: "0.6em",
         fontFamily: `"${font.family}", sans-serif`,
         fontWeight: font.weight,
-        transition: cycling ? "none" : "font-family 0.3s ease",
+        transition: cycling ? "none" : "font-family 0.25s ease, font-weight 0.25s ease",
       }}
     >
       {letter}
@@ -70,37 +55,58 @@ function AnimatedLetter({ letter, cycling }: AnimatedLetterProps) {
 
 /**
  * HERO SECTION — Full screen cinematic intro.
- * "art" letters simultaneously rapid-randomize fonts for a decipher effect.
+ * "art" letters simultaneously decipher through 6 fonts (no duplicates),
+ * then settle sequentially back to CS font.
  */
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtextRef = useRef<HTMLParagraphElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
   const [cycling, setCycling] = useState(false);
+  const [fonts, setFonts] = useState<[Font, Font, Font]>([CS_FONT, CS_FONT, CS_FONT]);
 
   // ART decipher loop
   useEffect(() => {
-    let outerTimer: ReturnType<typeof setTimeout>;
-    let cycleTimer: ReturnType<typeof setTimeout>;
     let mounted = true;
+    const timers: ReturnType<typeof setTimeout>[] = [];
 
-    function runLoop() {
+    const T = (fn: () => void, ms: number) => {
+      const id = setTimeout(() => { if (mounted) fn(); }, ms);
+      timers.push(id);
+    };
+
+    function runCycle() {
       if (!mounted) return;
       setCycling(true);
-      cycleTimer = setTimeout(() => {
+
+      let elapsed = 0;
+      function tick() {
         if (!mounted) return;
-        setCycling(false);
-        cycleTimer = setTimeout(runLoop, HOLD_DURATION);
-      }, CYCLE_DURATION);
+        setFonts(pick3());
+        const delay = TICK_MIN + Math.random() * (TICK_MAX - TICK_MIN);
+        elapsed += delay;
+        if (elapsed < CYCLE_DURATION) {
+          T(tick, delay);
+        } else {
+          // Sequential settle back to CS
+          setCycling(false);
+          T(() => setFonts(([, r, t]) => [CS_FONT, r, t]), 0);
+          T(() => setFonts(([a, , t]) => [a, CS_FONT, t]), SETTLE_STAGGER);
+          T(() => setFonts(([a, r]) => [a, r, CS_FONT]), SETTLE_STAGGER * 2);
+          T(runCycle, SETTLE_STAGGER * 2 + HOLD_DURATION);
+        }
+      }
+
+      tick();
     }
 
-    outerTimer = setTimeout(runLoop, INITIAL_DELAY);
+    T(runCycle, INITIAL_DELAY);
 
     return () => {
       mounted = false;
-      clearTimeout(outerTimer);
-      clearTimeout(cycleTimer);
+      timers.forEach(clearTimeout);
     };
   }, []);
 
@@ -172,9 +178,9 @@ export default function Hero() {
           <br />
           <span className="text-red-500 text-glow-red">
             So is{" "}
-            <AnimatedLetter letter="a" cycling={cycling} />
-            <AnimatedLetter letter="r" cycling={cycling} />
-            <AnimatedLetter letter="t" cycling={cycling} />
+            <AnimatedLetter letter="a" font={fonts[0]} cycling={cycling} />
+            <AnimatedLetter letter="r" font={fonts[1]} cycling={cycling} />
+            <AnimatedLetter letter="t" font={fonts[2]} cycling={cycling} />
           </span>
         </h1>
 
