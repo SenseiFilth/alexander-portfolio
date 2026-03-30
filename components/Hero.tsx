@@ -39,16 +39,34 @@ interface LetterProps {
 
 function AnimatedLetter({ letter, font, cycling }: LetterProps) {
   return (
+    // Outer: fixed-size inline-block — permanently holds its space in the line flow.
+    // No font change inside can alter this box's dimensions.
     <span
       style={{
         display: "inline-block",
-        minWidth: "0.6em",
-        fontFamily: `"${font.family}", sans-serif`,
-        fontWeight: font.weight,
-        transition: cycling ? "none" : "font-family 0.25s ease, font-weight 0.25s ease",
+        width: "0.65em",
+        height: "0.82em",
+        position: "relative",
+        verticalAlign: "top",
+        overflow: "visible",
       }}
     >
-      {letter}
+      {/* Inner: absolutely positioned — centered in the box, out of flow entirely */}
+      <span
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+          whiteSpace: "nowrap",
+          lineHeight: 1,
+          fontFamily: `"${font.family}", sans-serif`,
+          fontWeight: font.weight,
+          transition: cycling ? "none" : "font-family 0.25s ease",
+        }}
+      >
+        {letter}
+      </span>
     </span>
   );
 }
