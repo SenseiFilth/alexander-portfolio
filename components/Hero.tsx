@@ -10,12 +10,12 @@ const CS_FONT: Font = { family: "CounterStrike", weight: 400 };
 
 // All 6 fonts — CS included so it can appear mid-cycle
 const ALL_FONTS: Font[] = [
-  { family: "Sora", weight: 700 },
-  { family: "Orbitron", weight: 700 },
-  { family: "Exo 2", weight: 700 },
-  { family: "Bebas Neue", weight: 400 },
-  { family: "Audiowide", weight: 400 },
-  CS_FONT,
+  { family: "Bodoni Moda", weight: 700 },       // luxury editorial serif
+  { family: "Plus Jakarta Sans", weight: 700 }, // clean modern swiss sans
+  { family: "Playfair Display", weight: 700 },  // contemporary editorial serif
+  { family: "Space Grotesk", weight: 700 },     // tech futurist sans
+  { family: "Barlow Condensed", weight: 800 },  // bold impact display
+  { family: "Instrument Serif", weight: 400 },  // soft artistic serif
 ];
 
 const INITIAL_DELAY = 2000;
