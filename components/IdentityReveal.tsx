@@ -6,7 +6,6 @@ import {
   useScroll,
   useTransform,
   useSpring,
-  useMotionTemplate,
 } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -69,167 +68,150 @@ const CARDS = [
   },
 ];
 
-// ─── Parallelogram clip + scroll-driven individual card ───────────────────────
+// ─── Card: entrance wrapper (CSS) + inner motion.a (parallax y only) ──────────
 function ContactCard({
   card,
   index,
   scrollYProgress,
+  isVisible,
 }: {
   card: (typeof CARDS)[0];
   index: number;
   scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
+  isVisible: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
 
-  // Each card has a slightly different parallax speed — heavier cards (left) move slower
-  const parallaxRange = 50 + index * 12;
+  // Scroll-driven parallax — each card at a slightly different depth
+  const parallaxRange = 30 + index * 8;
   const rawY = useTransform(
     scrollYProgress,
-    [0, 0.35, 0.65, 1],
-    [parallaxRange, 0, 0, -parallaxRange * 0.4]
+    [0, 0.4, 0.7, 1],
+    [parallaxRange, 0, 0, -parallaxRange * 0.3]
   );
-  const y = useSpring(rawY, { stiffness: 80, damping: 20 });
-
-  // Opacity — staggered entry, stable dwell, soft exit
-  const entryStart = 0.05 + index * 0.04;
-  const opacity = useTransform(
-    scrollYProgress,
-    [entryStart, entryStart + 0.2, 0.75, 1],
-    [0, 1, 1, 0.7]
-  );
-
-  // Scale — card "locks in" on entry
-  const scale = useTransform(
-    scrollYProgress,
-    [entryStart, entryStart + 0.2, 0.8],
-    [0.93, 1, 1]
-  );
-  const smoothScale = useSpring(scale, { stiffness: 100, damping: 18 });
-
-  // Blur filter
-  const blurRaw = useTransform(
-    scrollYProgress,
-    [entryStart, entryStart + 0.2],
-    [8, 0]
-  );
-  const filterValue = useMotionTemplate`blur(${blurRaw}px)`;
+  const y = useSpring(rawY, { stiffness: 80, damping: 22 });
 
   return (
-    <motion.a
-      href={card.href}
-      target={card.href.startsWith("http") ? "_blank" : undefined}
-      rel={card.href.startsWith("http") ? "noopener noreferrer" : undefined}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      // Scroll-driven parallax only — no entrance jump
+    // ── Entrance wrapper ─────────────────────────────────────────────────────
+    // Always in the DOM so the grid height is always reserved → name never jumps.
+    // CSS transition slides cards up from below when isVisible fires.
+    <div
       style={{
-        y,
-        scale: smoothScale,
-        opacity,
-        filter: filterValue,
-        // 9:16 aspect ratio
-        aspectRatio: "9 / 16",
-        // Parallelogram clip — each card is a slanted rhombus shape
-        clipPath: "polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)",
-        cursor: "pointer",
-        textDecoration: "none",
-        display: "flex",
-        flexDirection: "column",
-        position: "relative",
-        overflow: "hidden",
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateY(0px)" : "translateY(72px)",
+        transition: "opacity 0.65s ease, transform 0.7s cubic-bezier(0.22, 1.2, 0.36, 1)",
+        transitionDelay: `${index * 0.11}s`,
       }}
-      whileTap={{ scale: 0.97 }}
-      className="select-none group"
     >
-      {/* Background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-700"
+      {/* ── Inner motion.a — scroll parallax y only ─────────────────────── */}
+      <motion.a
+        href={card.href}
+        target={card.href.startsWith("http") ? "_blank" : undefined}
+        rel={card.href.startsWith("http") ? "noopener noreferrer" : undefined}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
         style={{
-          backgroundImage: `url(${card.bg})`,
-          transform: hovered ? "scale(1.06)" : "scale(1)",
+          y,
+          aspectRatio: "9 / 16",
+          clipPath: "polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)",
+          cursor: "pointer",
+          textDecoration: "none",
+          display: "flex",
+          flexDirection: "column",
+          position: "relative",
+          overflow: "hidden",
         }}
-      />
+        whileTap={{ scale: 0.97 }}
+        className="select-none group"
+      >
+        {/* Background image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-700"
+          style={{
+            backgroundImage: `url(${card.bg})`,
+            transform: hovered ? "scale(1.06)" : "scale(1)",
+          }}
+        />
 
-      {/* Dark overlay — heavier at bottom for text legibility */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 30%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.92) 100%)",
-        }}
-      />
+        {/* Dark overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 30%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.92) 100%)",
+          }}
+        />
 
-      {/* Scarlet top accent bar */}
-      <div
-        className="absolute top-0 left-0 right-0 h-[2px] z-10 transition-all duration-500"
-        style={{
-          background: `linear-gradient(to right, transparent, ${SCARLET_BRIGHT}, transparent)`,
-          boxShadow: hovered
-            ? `0 0 16px 3px rgba(${SCARLET_RGB},0.8)`
-            : `0 0 8px 1px rgba(${SCARLET_RGB},0.4)`,
-        }}
-      />
+        {/* Scarlet top accent bar */}
+        <div
+          className="absolute top-0 left-0 right-0 h-[2px] z-10 transition-all duration-500"
+          style={{
+            background: `linear-gradient(to right, transparent, ${SCARLET_BRIGHT}, transparent)`,
+            boxShadow: hovered
+              ? `0 0 16px 3px rgba(${SCARLET_RGB},0.8)`
+              : `0 0 8px 1px rgba(${SCARLET_RGB},0.4)`,
+          }}
+        />
 
-      {/* Scarlet edge glow on hover */}
-      <div
-        className="absolute inset-0 z-10 transition-opacity duration-500 pointer-events-none"
-        style={{
-          boxShadow: `inset 0 0 30px rgba(${SCARLET_RGB},${hovered ? "0.15" : "0"})`,
-        }}
-      />
+        {/* Scarlet edge glow on hover */}
+        <div
+          className="absolute inset-0 z-10 transition-opacity duration-500 pointer-events-none"
+          style={{
+            boxShadow: `inset 0 0 30px rgba(${SCARLET_RGB},${hovered ? "0.15" : "0"})`,
+          }}
+        />
 
-      {/* Light sweep on hover */}
-      <motion.div
-        className="absolute inset-0 z-10 pointer-events-none"
-        initial={false}
-        animate={hovered ? { x: "160%" } : { x: "-100%" }}
-        transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
-        style={{
-          width: "50%",
-          background:
-            "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.06) 50%, transparent 80%)",
-        }}
-      />
+        {/* Light sweep on hover */}
+        <motion.div
+          className="absolute inset-0 z-10 pointer-events-none"
+          initial={false}
+          animate={hovered ? { x: "160%" } : { x: "-100%" }}
+          transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
+          style={{
+            width: "50%",
+            background:
+              "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.06) 50%, transparent 80%)",
+          }}
+        />
 
-      {/* Content */}
-      <div className="relative z-20 flex flex-col h-full px-6 py-6 justify-between">
-        {/* Icon — centered in upper 60% of card */}
-        <div className="flex-1 flex items-center justify-center">
-          <div
-            className="flex items-center justify-center rounded-xl w-16 h-16 transition-transform duration-300"
-            style={{
-              color: "white",
-              background: `rgba(${SCARLET_RGB},0.2)`,
-              border: `1px solid rgba(${SCARLET_RGB},0.4)`,
-              transform: hovered ? "scale(1.12)" : "scale(1)",
-              boxShadow: hovered
-                ? `0 0 20px rgba(${SCARLET_RGB},0.5)`
-                : `0 0 8px rgba(${SCARLET_RGB},0.2)`,
-            }}
-          >
-            {card.icon}
+        {/* Content */}
+        <div className="relative z-20 flex flex-col h-full px-6 py-6 justify-between">
+          {/* Icon */}
+          <div className="flex-1 flex items-center justify-center">
+            <div
+              className="flex items-center justify-center rounded-xl w-16 h-16 transition-transform duration-300"
+              style={{
+                color: "white",
+                background: `rgba(${SCARLET_RGB},0.2)`,
+                border: `1px solid rgba(${SCARLET_RGB},0.4)`,
+                transform: hovered ? "scale(1.12)" : "scale(1)",
+                boxShadow: hovered
+                  ? `0 0 20px rgba(${SCARLET_RGB},0.5)`
+                  : `0 0 8px rgba(${SCARLET_RGB},0.2)`,
+              }}
+            >
+              {card.icon}
+            </div>
+          </div>
+
+          {/* Label + Value */}
+          <div className="flex flex-col gap-1">
+            <p
+              className="text-[9px] font-semibold tracking-[0.4em] uppercase"
+              style={{ color: SCARLET_BRIGHT }}
+            >
+              {card.label}
+            </p>
+            <p
+              className="text-[11px] font-bold leading-snug text-white whitespace-pre-line"
+              style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}
+            >
+              {card.value}
+            </p>
           </div>
         </div>
-
-        {/* Label + Value — pinned to bottom */}
-        <div className="flex flex-col gap-1">
-          <p
-            className="text-[9px] font-semibold tracking-[0.4em] uppercase"
-            style={{ color: SCARLET_BRIGHT }}
-          >
-            {card.label}
-          </p>
-          <p
-            className="text-[11px] font-bold leading-snug text-white whitespace-pre-line"
-            style={{
-              textShadow: "0 1px 4px rgba(0,0,0,0.8)",
-            }}
-          >
-            {card.value}
-          </p>
-        </div>
-      </div>
-    </motion.a>
+      </motion.a>
+    </div>
   );
 }
 
@@ -243,7 +225,6 @@ export default function IdentityReveal() {
   const contactRef = useRef<HTMLDivElement>(null);
   const [contactVisible, setContactVisible] = useState(false);
 
-  // Scroll progress scoped to this section only
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start 90%", "end 10%"],
@@ -291,7 +272,7 @@ export default function IdentityReveal() {
       );
     }, section);
 
-    // Trigger contact card entrance via IntersectionObserver
+    // IntersectionObserver triggers card slide-in (not conditional rendering)
     const contact = contactRef.current;
     if (contact) {
       const obs = new IntersectionObserver(
@@ -306,13 +287,11 @@ export default function IdentityReveal() {
   }, []);
 
   return (
-    // Extra height creates scroll dwell so cards feel "pinned" briefly
     <section
       ref={sectionRef}
       className="relative bg-[#050505]"
       style={{ minHeight: "120vh" }}
     >
-      {/* Sticky container — cards stay in view through the dwell zone */}
       <div
         ref={stickyRef}
         className="sticky top-0 min-h-screen flex items-center justify-center overflow-hidden py-24"
@@ -364,20 +343,20 @@ export default function IdentityReveal() {
             <span className="text-red-500/60">·</span> AI Consultant
           </p>
 
-          {/* Contact cards — 4 parallelogram cards in a row */}
+          {/* Contact cards — always in DOM to prevent layout shift */}
           <div
             ref={contactRef}
             className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-1 max-w-2xl mx-auto"
           >
-            {contactVisible &&
-              CARDS.map((card, i) => (
-                <ContactCard
-                  key={card.label}
-                  card={card}
-                  index={i}
-                  scrollYProgress={scrollYProgress}
-                />
-              ))}
+            {CARDS.map((card, i) => (
+              <ContactCard
+                key={card.label}
+                card={card}
+                index={i}
+                scrollYProgress={scrollYProgress}
+                isVisible={contactVisible}
+              />
+            ))}
           </div>
         </div>
       </div>
