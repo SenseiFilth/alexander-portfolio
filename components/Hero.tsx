@@ -8,14 +8,14 @@ interface Font { family: string; weight: number; }
 
 const CS_FONT: Font = { family: "CounterStrike", weight: 400 };
 
-// All 6 fonts — no CS in rotation, CS is resting state only
+// All 6 local fonts — CS is resting state only
 const ALL_FONTS: Font[] = [
-  { family: "Blanka", weight: 400 },            // sci-fi stencil void
-  { family: "Bungee Shade", weight: 400 },      // neon signage / tube lettering
-  { family: "Orbitron", weight: 900 },          // space HUD, black weight
-  { family: "UnifrakturMaguntia", weight: 400 },// blackletter gothic brutal
-  { family: "VT323", weight: 400 },             // pixel terminal / corrupted system
-  { family: "Rubik Glitch", weight: 400 },      // deconstructed fractured glyphs
+  { family: "Blanka", weight: 400 },        // sci-fi stencil void
+  { family: "Orbitron", weight: 900 },      // space HUD black
+  { family: "CloisterBlack", weight: 400 }, // blackletter gothic
+  { family: "LowresPixel", weight: 400 },   // pixel terminal
+  { family: "Ryga", weight: 400 },          // geometric futurist
+  { family: "Yiroglyphics", weight: 400 },  // deconstructed glyphs
 ];
 
 const INITIAL_DELAY = 2000;
