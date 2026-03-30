@@ -53,12 +53,12 @@ export default function CallToAction() {
         }}
       >
         <h2 className="font-cs text-4xl sm:text-6xl md:text-7xl font-black mb-6 leading-tight">
-          Build Something That Actually
+          Build Something That
           <br />
           <span className="text-red-500 text-glow-red">Stands Out</span>
         </h2>
 
-        <p className="text-white/40 font-light mb-10 text-lg max-w-md mx-auto tracking-widest uppercase">
+        <p className="text-white/40 font-light mb-10 text-sm md:text-lg max-w-md mx-auto tracking-widest uppercase">
           Precision&nbsp;&nbsp;·&nbsp;&nbsp;Performance&nbsp;&nbsp;·&nbsp;&nbsp;Presence
         </p>
 

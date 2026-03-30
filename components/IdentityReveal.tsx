@@ -121,15 +121,7 @@ function ContactCard({
       rel={card.href.startsWith("http") ? "noopener noreferrer" : undefined}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      // Entrance drop-in
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{
-        duration: 0.6,
-        delay: 0.15 + index * 0.13,
-        ease: [0.22, 1.2, 0.36, 1],
-      }}
-      // Scroll-driven layer on top of entrance
+      // Scroll-driven parallax only — no entrance jump
       style={{
         y,
         scale: smoothScale,

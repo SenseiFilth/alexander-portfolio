@@ -52,7 +52,7 @@ export default function Statement() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-20 flex items-center justify-center px-6 overflow-hidden"
+      className="relative py-36 md:py-20 flex items-center justify-center px-6 overflow-hidden"
     >
       {/* Subtle background scarlet bloom on scroll */}
       <motion.div

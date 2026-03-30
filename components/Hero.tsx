@@ -67,7 +67,7 @@ export default function Hero() {
         playsInline
         loop
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover opacity-0 scale-[0.85] md:scale-100"
+        className="absolute inset-0 w-full h-full object-cover opacity-0"
         src="/video/hero-bg.mp4"
       />
 
