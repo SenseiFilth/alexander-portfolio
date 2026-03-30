@@ -1,12 +1,120 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
+
+// Fonts to cycle through before returning to CS
+const CYCLE_FONTS = [
+  { family: "Sora", weight: 700 },
+  { family: "Orbitron", weight: 700 },
+  { family: "Exo 2", weight: 700 },
+  { family: "Bebas Neue", weight: 400 },
+  { family: "Audiowide", weight: 400 },
+];
+
+const CS_FONT = { family: "CounterStrike", weight: 400 };
+const INITIAL_DELAY = 2000;
+const LETTER_STAGGER = 900;
+const FONT_INTERVAL = 3000;
+const HOLD_DURATION = 2500;
+const TRANSITION_OUT = 110;
+const TRANSITION_IN = 220;
+
+interface AnimatedLetterProps {
+  letter: string;
+  staggerOffset: number; // ms delay before this letter starts cycling
+}
+
+function AnimatedLetter({ letter, staggerOffset }: AnimatedLetterProps) {
+  const [fontIndex, setFontIndex] = useState<number | null>(null); // null = CS font
+  const [visible, setVisible] = useState(true);
+  const mountedRef = useRef(true);
+
+  const transition = useCallback(
+    (nextFontIndex: number | null, onDone: () => void) => {
+      if (!mountedRef.current) return;
+      // Fade out
+      setVisible(false);
+      setTimeout(() => {
+        if (!mountedRef.current) return;
+        setFontIndex(nextFontIndex);
+        setVisible(true);
+        setTimeout(() => {
+          if (mountedRef.current) onDone();
+        }, TRANSITION_IN);
+      }, TRANSITION_OUT);
+    },
+    []
+  );
+
+  useEffect(() => {
+    mountedRef.current = true;
+
+    let outerTimer: ReturnType<typeof setTimeout>;
+    let cycleTimer: ReturnType<typeof setTimeout>;
+
+    function runCycle() {
+      let step = 0;
+
+      function nextStep() {
+        if (!mountedRef.current) return;
+
+        if (step < CYCLE_FONTS.length) {
+          // Cycle through each font
+          transition(step, () => {
+            step++;
+            cycleTimer = setTimeout(nextStep, FONT_INTERVAL - TRANSITION_OUT - TRANSITION_IN);
+          });
+        } else {
+          // Return to CS font, hold, then repeat
+          transition(null, () => {
+            cycleTimer = setTimeout(runCycle, HOLD_DURATION);
+          });
+        }
+      }
+
+      nextStep();
+    }
+
+    outerTimer = setTimeout(() => {
+      if (!mountedRef.current) return;
+      cycleTimer = setTimeout(runCycle, staggerOffset);
+    }, INITIAL_DELAY);
+
+    return () => {
+      mountedRef.current = false;
+      clearTimeout(outerTimer);
+      clearTimeout(cycleTimer);
+    };
+  }, [staggerOffset, transition]);
+
+  const currentFont = fontIndex !== null ? CYCLE_FONTS[fontIndex] : CS_FONT;
+
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        minWidth: "0.6em",
+        fontFamily: `"${currentFont.family}", sans-serif`,
+        fontWeight: currentFont.weight,
+        opacity: visible ? 1 : 0,
+        filter: visible ? "blur(0px)" : "blur(6px)",
+        transform: visible ? "scale(1)" : "scale(0.88)",
+        transition: visible
+          ? `opacity ${TRANSITION_IN}ms ease, filter ${TRANSITION_IN}ms ease, transform ${TRANSITION_IN}ms ease`
+          : `opacity ${TRANSITION_OUT}ms ease, filter ${TRANSITION_OUT}ms ease, transform ${TRANSITION_OUT}ms ease`,
+      }}
+    >
+      {letter}
+    </span>
+  );
+}
 
 /**
  * HERO SECTION — Full screen cinematic intro.
  * Video plays once (no ping-pong) for performance.
+ * "art" letters independently cycle through 5 fonts on a loop.
  */
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -82,7 +190,12 @@ export default function Hero() {
         >
           Technology is my medium
           <br />
-          <span className="text-red-500 text-glow-red">So is art</span>
+          <span className="text-red-500 text-glow-red">
+            So is{" "}
+            <AnimatedLetter letter="a" staggerOffset={0} />
+            <AnimatedLetter letter="r" staggerOffset={LETTER_STAGGER} />
+            <AnimatedLetter letter="t" staggerOffset={LETTER_STAGGER * 2} />
+          </span>
         </h1>
 
         <p
