@@ -57,7 +57,8 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative h-screen w-full flex items-center justify-center overflow-hidden"
+      className="relative w-full flex items-center justify-center overflow-hidden"
+      style={{ height: "100dvh" }}
     >
       <div className="absolute inset-0 bg-[#050505]" />
 

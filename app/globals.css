@@ -46,18 +46,33 @@ main {
   overflow-x: hidden;
 }
 
-/* Custom scrollbar */
+/* Scrollbar — hidden at rest, appears on hover for a fullscreen feel */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-black);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-red);
+  background: transparent;
   border-radius: 2px;
+  transition: background 0.4s ease;
+}
+
+body:hover ::-webkit-scrollbar-thumb {
+  background: rgba(220, 38, 38, 0.45);
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+body:hover {
+  scrollbar-color: rgba(220, 38, 38, 0.45) transparent;
 }
 
 /* Selection color */
