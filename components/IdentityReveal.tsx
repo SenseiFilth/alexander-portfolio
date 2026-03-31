@@ -21,7 +21,7 @@ const SCARLET_RGB = "155,28,28";
 const CARDS = [
   {
     label: "Email",
-    value: "brown.alexander\n10133@gmail.com",
+    value: "Contact Me",
     href: "mailto:brown.alexander10133@gmail.com",
     bg: "/contact-bg/card-1.png",
     icon: (
@@ -303,7 +303,7 @@ export default function IdentityReveal() {
           aria-hidden="true"
         >
           <span className="text-[12vw] font-black text-white/5 whitespace-nowrap">
-            McKINNON-BROWN
+            McKINNON BROWN
           </span>
         </div>
 
@@ -316,7 +316,7 @@ export default function IdentityReveal() {
             Alexander
             <br />
             <span className="text-red-500 whitespace-nowrap">
-              McKinnon<span style={{ fontFamily: "Inter, sans-serif", letterSpacing: "-0.02em" }}>-</span>Brown
+              McKinnon Brown
             </span>
           </h2>
 
@@ -326,8 +326,8 @@ export default function IdentityReveal() {
             className="mt-6 text-base md:text-lg text-white/40 font-light tracking-widest uppercase opacity-0"
           >
             Creative Technologist{" "}
-            <span className="text-red-500/60">·</span> Full Stack Developer{" "}
-            <span className="text-red-500/60">·</span> AI Consultant
+            <span className="text-red-500/60">·</span> Full Stack{" "}
+            <span className="text-red-500/60">·</span> AI Consultation
           </p>
 
           {/* Contact cards — always in DOM to prevent layout shift */}
@@ -344,6 +344,31 @@ export default function IdentityReveal() {
                 isVisible={contactVisible}
               />
             ))}
+          </div>
+
+          {/* Interactive Portfolio CTA */}
+          <div className="mt-10">
+            <a
+              href={process.env.NEXT_PUBLIC_PORTFOLIO_URL ?? "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-3 px-8 py-4 border border-white/10 hover:border-red-500/60 transition-all duration-300 relative overflow-hidden"
+              style={{ clipPath: "polygon(6% 0%, 100% 0%, 94% 100%, 0% 100%)" }}
+            >
+              <span className="absolute inset-0 bg-red-500/0 group-hover:bg-red-500/5 transition-colors duration-300" />
+              <span className="relative text-xs tracking-[0.35em] uppercase text-white/50 group-hover:text-white/90 transition-colors duration-300 font-light">
+                View Interactive Portfolio
+              </span>
+              <svg
+                className="relative w-4 h-4 text-red-500/50 group-hover:text-red-500 transition-all duration-300 group-hover:translate-x-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
           </div>
         </div>
       </div>

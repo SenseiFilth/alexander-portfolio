@@ -213,7 +213,7 @@ export default function Hero() {
           ref={subtextRef}
           className="mt-6 md:mt-8 text-lg md:text-xl text-white/50 font-light tracking-wide opacity-0"
         >
-          Full stack developer and AI consultant with a fine arts background
+          Full Stack Developer &amp; AI Consultant with a background in Fine Arts
           <br className="hidden md:block" />
         </p>
       </div>

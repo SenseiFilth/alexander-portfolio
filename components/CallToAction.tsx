@@ -108,7 +108,7 @@ export default function CallToAction() {
           &ldquo;Inside, I am infinite.&rdquo; — Miyamoto Musashi
         </p>
         <p className="text-white/10 text-xs tracking-wider">
-          &copy; {new Date().getFullYear()} Alexander McKinnon-Brown. All rights reserved.
+          &copy; {new Date().getFullYear()} Alexander McKinnon Brown. All rights reserved.
         </p>
       </div>
     </section>
