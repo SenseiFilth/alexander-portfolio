@@ -22,7 +22,11 @@
       "Bash(cp \"C:\\\\Users\\\\tyson\\\\Downloads\\\\WEBSITE IMAGES\\\\Website Fonts\\\\ART TEXT EFFECT FONTS\\\\blanka-free-for-commercial-use\\\\blanka-free-for-commercial-use\\\\Blanka.otf\" \"C:\\\\Users\\\\tyson\\\\OneDrive\\\\Documents\\\\PORT WEBSITE\\\\public\\\\fonts\\\\Blanka.otf\")",
       "Bash(cp \"C:\\\\Users\\\\tyson\\\\Downloads\\\\WEBSITE IMAGES\\\\Website Fonts\\\\ART TEXT EFFECT FONTS\\\\cloister-black-font\\\\CloisterBlackLight-axjg.ttf\" \"C:\\\\Users\\\\tyson\\\\OneDrive\\\\Documents\\\\PORT WEBSITE\\\\public\\\\fonts\\\\CloisterBlack.ttf\")",
       "Bash(cp \"C:\\\\Users\\\\tyson\\\\Downloads\\\\WEBSITE IMAGES\\\\Website Fonts\\\\ART TEXT EFFECT FONTS\\\\lower-pixel\\\\LowresPixel-Regular.otf\" \"C:\\\\Users\\\\tyson\\\\OneDrive\\\\Documents\\\\PORT WEBSITE\\\\public\\\\fonts\\\\LowresPixel.otf\")",
-      "Bash(cp \"C:\\\\Users\\\\tyson\\\\Downloads\\\\WEBSITE IMAGES\\\\Website Fonts\\\\ART TEXT EFFECT FONTS\\\\ryga\\\\RygaRegular.ttf\" \"C:\\\\Users\\\\tyson\\\\OneDrive\\\\Documents\\\\PORT WEBSITE\\\\public\\\\fonts\\\\Ryga.ttf\")"
+      "Bash(cp \"C:\\\\Users\\\\tyson\\\\Downloads\\\\WEBSITE IMAGES\\\\Website Fonts\\\\ART TEXT EFFECT FONTS\\\\ryga\\\\RygaRegular.ttf\" \"C:\\\\Users\\\\tyson\\\\OneDrive\\\\Documents\\\\PORT WEBSITE\\\\public\\\\fonts\\\\Ryga.ttf\")",
+      "Bash(vercel --version)",
+      "Read(//c/Users/tyson/Downloads/WEBSITE IMAGES/Website Fonts/Aquire/**)",
+      "Read(//c/Users/tyson/Downloads/WEBSITE IMAGES/Website Fonts/**)",
+      "Bash(node -e \"const fs=require\\(''fs''\\);const logs=JSON.parse\\(fs.readFileSync\\(''C:/Users/tyson/.claude/projects/C--Users-tyson-OneDrive-Documents-PORT-WEBSITE/aaffe615-72e9-42fd-862f-9ff12dd01423/tool-results/mcp-Claude_Preview-preview_console_logs-1775060762848.txt'',''utf8''\\)\\);const errors=logs.filter\\(l=>l.type===''error''||/error/i.test\\(l.text\\)\\);console.log\\(errors.slice\\(0,10\\).map\\(l=>l.text.slice\\(0,400\\)\\).join\\(''\\\\n---\\\\n''\\)\\)\")"
     ]
   }
 }
