@@ -33,34 +33,21 @@ interface LetterProps {
 
 function AnimatedLetter({ letter, font, cycling }: LetterProps) {
   return (
-    // Outer: fixed-size inline-block. Bottom edge = line baseline (verticalAlign baseline).
+    // Fixed-width container keeps layout stable when fonts change.
+    // Inner span flows naturally so baseline always matches surrounding text.
     <span
       style={{
         display: "inline-block",
         width: "0.65em",
-        height: "0.82em",
-        position: "relative",
-        verticalAlign: "baseline",
+        textAlign: "center",
         overflow: "visible",
       }}
     >
-      {/*
-        Inner: absolutely positioned.
-        CS font needs bottom:-0.2em because the text baseline sits ~0.2em
-        above the span's bottom edge (descender space in the em square).
-        Animation fonts don't need to be baseline-perfect — they're brief.
-      */}
       <span
         style={{
-          position: "absolute",
-          bottom: font.family === "CounterStrike" ? "-0.2em" : "0",
-          left: "50%",
-          transform: "translateX(-50%)",
-          whiteSpace: "nowrap",
-          lineHeight: 1,
           fontFamily: `"${font.family}", sans-serif`,
           fontWeight: font.weight,
-          transition: cycling ? "none" : "font-family 0.25s ease, bottom 0.25s ease",
+          transition: cycling ? "none" : "font-family 0.3s ease",
         }}
       >
         {letter}
@@ -211,9 +198,9 @@ export default function Hero() {
 
         <p
           ref={subtextRef}
-          className="mt-6 md:mt-8 text-lg md:text-xl text-white/50 font-light tracking-wide opacity-0"
+          className="mt-6 md:mt-8 text-sm md:text-base text-white/40 font-light tracking-widest uppercase max-w-md mx-auto opacity-0"
         >
-          Full Stack Developer &amp; AI Consultant with a background in Fine Arts
+          Built Different — By Design
           <br className="hidden md:block" />
         </p>
       </div>

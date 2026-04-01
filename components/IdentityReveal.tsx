@@ -349,7 +349,7 @@ export default function IdentityReveal() {
           {/* Interactive Portfolio CTA */}
           <div className="mt-10">
             <a
-              href={process.env.NEXT_PUBLIC_PORTFOLIO_URL ?? "#"}
+              href="https://amckbresume.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-3 px-8 py-4 border border-white/10 hover:border-red-500/60 transition-all duration-300 relative overflow-hidden"
@@ -357,7 +357,7 @@ export default function IdentityReveal() {
             >
               <span className="absolute inset-0 bg-red-500/0 group-hover:bg-red-500/5 transition-colors duration-300" />
               <span className="relative text-xs tracking-[0.35em] uppercase text-white/50 group-hover:text-white/90 transition-colors duration-300 font-light">
-                View Interactive Portfolio
+                View Interactive Resume
               </span>
               <svg
                 className="relative w-4 h-4 text-red-500/50 group-hover:text-red-500 transition-all duration-300 group-hover:translate-x-1"
