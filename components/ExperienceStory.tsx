@@ -95,7 +95,7 @@ export default function ExperienceStory() {
       <div className="max-w-5xl mx-auto">
         <h2
           ref={headingRef}
-          className="text-3xl md:text-5xl font-black mb-20 text-center opacity-0"
+          className="font-aquire text-3xl md:text-5xl font-black mb-20 text-center opacity-0"
         >
           The <span className="text-red-500">Path</span>
         </h2>

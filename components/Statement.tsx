@@ -73,7 +73,7 @@ export default function Statement() {
       <div className="relative z-10 text-center max-w-5xl w-full" style={{ perspective: "1200px" }}>
         {/* Line 1 — white, slower parallax */}
         <motion.div style={{ y: y1, scale }}>
-          <span className="font-cs block text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-[1.05]">
+          <span className="font-aquire block text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-[1.05]">
             {line1.map((word) => {
               const i = wordIndex++;
               return (
@@ -96,7 +96,7 @@ export default function Statement() {
 
         {/* Line 2 — red, faster parallax */}
         <motion.div style={{ y: y2, scale }}>
-          <span className="font-cs block text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-[1.05] text-red-500 text-glow-red">
+          <span className="font-aquire block text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-[1.05] text-red-500 text-glow-red">
             {line2.map((word) => {
               const i = wordIndex++;
               return (

@@ -311,7 +311,7 @@ export default function IdentityReveal() {
           {/* Name */}
           <h2
             ref={nameRef}
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight opacity-0"
+            className="font-aquire text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight opacity-0"
           >
             Alexander
             <br />
