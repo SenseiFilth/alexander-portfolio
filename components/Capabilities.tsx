@@ -164,7 +164,7 @@ export default function Capabilities() {
       <div className="h-screen flex flex-col justify-center">
         <h2
           ref={headingRef}
-          className="font-cs text-3xl md:text-5xl font-black mb-16 px-6 md:px-20 opacity-0 text-center"
+          className="text-3xl md:text-5xl font-black mb-16 px-6 md:px-20 opacity-0 text-center"
         >
           Technical <span className="text-red-500">Stack</span>
         </h2>
