@@ -6,9 +6,9 @@ import { gsap } from "gsap";
 
 interface Font { family: string; weight: number; }
 
-const CS_FONT: Font = { family: "CounterStrike", weight: 400 };
+const DEFAULT_FONT: Font = { family: "inherit", weight: 900 };
 
-// 4 local fonts — CS is the resting state only
+// 4 local fonts — default (inherit) is the resting state only
 const ALL_FONTS: Font[] = [
   { family: "CloisterBlack", weight: 400 }, // blackletter gothic
   { family: "Ryga", weight: 400 },          // geometric futurist
@@ -45,7 +45,7 @@ function AnimatedLetter({ letter, font, cycling }: LetterProps) {
     >
       <span
         style={{
-          fontFamily: `"${font.family}", sans-serif`,
+          fontFamily: font.family === "inherit" ? "inherit" : `"${font.family}", sans-serif`,
           fontWeight: font.weight,
           transition: cycling ? "none" : "font-family 0.3s ease",
         }}
@@ -68,7 +68,7 @@ export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const [cycling, setCycling] = useState(false);
-  const [fonts, setFonts] = useState<[Font, Font, Font]>([CS_FONT, CS_FONT, CS_FONT]);
+  const [fonts, setFonts] = useState<[Font, Font, Font]>([DEFAULT_FONT, DEFAULT_FONT, DEFAULT_FONT]);
   const cyclingRef = useRef(false);
 
   // Scroll-driven ART decipher — activates on any scroll/wheel input,
@@ -100,7 +100,7 @@ export default function Hero() {
         if (!mounted) return;
         cyclingRef.current = false;
         setCycling(false);
-        setFonts([CS_FONT, CS_FONT, CS_FONT]);
+        setFonts([DEFAULT_FONT, DEFAULT_FONT, DEFAULT_FONT]);
       }, SCROLL_STOP);
     }
 
