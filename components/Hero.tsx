@@ -186,7 +186,7 @@ export default function Hero() {
       <div className="relative z-10 text-center px-6 max-w-5xl">
         <h1
           ref={headlineRef}
-          className="font-aquire text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[0.9] opacity-0"
+          className="font-aquire text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[0.9] opacity-0"
         >
           Technology is my medium
           <br />
