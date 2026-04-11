@@ -99,7 +99,8 @@ html {
 
 body {
   font-family: "Inter", sans-serif;
-  background-color: var(--color-black);
+  /* transparent so the fixed AmbientBackground shows through non-hero sections */
+  background-color: transparent;
   color: var(--color-white);
   overflow-x: hidden;
 }
@@ -142,6 +143,24 @@ body:hover {
 ::selection {
   background-color: rgba(255, 42, 42, 0.3);
   color: var(--color-white);
+}
+
+/* ── Ambient constellation background — dual-layer crossfade ────────────── */
+/*
+ * Two video layers (A and B) play the same 5-second clip offset by 2.5 s.
+ * Inverse cosine-shaped opacity cycles ensure one layer is always near-peak
+ * while the other's loop boundary is hidden at near-zero opacity.
+ * ease-in-out approximates a smooth sinusoidal fade.
+ */
+@keyframes ambientLayerA {
+  0%   { opacity: 0.38; }
+  50%  { opacity: 0;    }
+  100% { opacity: 0.38; }
+}
+@keyframes ambientLayerB {
+  0%   { opacity: 0;    }
+  50%  { opacity: 0.38; }
+  100% { opacity: 0;    }
 }
 
 /* Noise overlay texture — GPU accelerated */

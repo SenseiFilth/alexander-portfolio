@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AmbientBackground from "@/components/AmbientBackground";
 
 export const metadata: Metadata = {
   title: "Alexander McKinnon-Brown | Developer & AI Consultant",
@@ -22,6 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        {/* Fixed constellation ambient loop — sits behind all sections.
+            Hero covers it with its own internal bg-[#050505] layer. */}
+        <AmbientBackground />
         {/* Animated noise/grain overlay */}
         <div className="noise-overlay" aria-hidden="true" />
         {children}

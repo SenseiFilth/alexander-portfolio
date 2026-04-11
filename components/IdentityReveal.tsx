@@ -289,7 +289,7 @@ export default function IdentityReveal() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-[#050505]"
+      className="relative"
       style={{ minHeight: "120vh" }}
     >
       <div
