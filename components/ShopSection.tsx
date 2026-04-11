@@ -87,7 +87,7 @@ export default function ShopSection() {
   const product = products[activeIndex];
 
   return (
-    <section ref={sectionRef} className="relative bg-[#050505]">
+    <section ref={sectionRef} className="relative">
       <div
         style={{ height: isMobile ? "auto" : `${products.length * 30}vh` }}
       >
