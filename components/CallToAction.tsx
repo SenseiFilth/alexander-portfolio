@@ -70,7 +70,7 @@ export default function CallToAction() {
       >
         {/* Heading */}
         <motion.div style={{ y: y1 }}>
-          <h2 className="font-aquire text-4xl sm:text-6xl md:text-7xl font-black mb-6 leading-tight">
+          <h2 className="font-aquire text-2xl sm:text-6xl md:text-7xl font-black mb-6 leading-tight whitespace-nowrap">
             Build Something That
             <br />
             <span className="text-red-500 text-glow-red">Stands Out</span>

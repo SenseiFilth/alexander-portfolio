@@ -62,7 +62,8 @@ export default function WebsiteCTA() {
             Reserve a Custom Website
           </p>
           <h2 className="font-aquire text-3xl md:text-5xl font-black">
-            Want a site <span className="text-red-500 text-glow-red">like this?</span>
+            <span className="block md:inline">Want a site </span>
+            <span className="block md:inline text-red-500 text-glow-red">like this?</span>
           </h2>
           <p className="mt-4 text-white/40 font-light max-w-lg mx-auto text-base md:text-lg tracking-widest uppercase">
             Craft your premium digital experience today

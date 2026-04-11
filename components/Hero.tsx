@@ -186,7 +186,7 @@ export default function Hero() {
       <div className="relative z-10 text-center px-6 max-w-5xl">
         <h1
           ref={headlineRef}
-          className="font-aquire text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[0.9] opacity-0"
+          className="font-cs text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.9] opacity-0"
         >
           Technology is my medium
           <br />
@@ -201,9 +201,11 @@ export default function Hero() {
 
         <p
           ref={subtextRef}
-          className="mt-6 md:mt-8 text-sm md:text-base text-white/40 font-light tracking-widest uppercase max-w-md mx-auto opacity-0"
+          className="font-cs mt-6 md:mt-8 text-sm md:text-base text-white/40 font-light tracking-widest uppercase max-w-md mx-auto opacity-0"
         >
-          Built Different — By Design
+          Built Different{" "}
+          <span style={{ fontFamily: "Inter, sans-serif" }}>—</span>
+          {" "}By Design
         </p>
       </div>
 

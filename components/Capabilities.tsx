@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -82,7 +82,6 @@ function TechCard({ tech, index }: { tech: (typeof technologies)[0]; index: numb
 
       {/* Content */}
       <div className="relative z-10 px-7 py-7 text-center">
-        {/* Red dot node */}
         <div
           className="w-2.5 h-2.5 rounded-full mx-auto mb-4 transition-all duration-300"
           style={{
@@ -107,24 +106,23 @@ function TechCard({ tech, index }: { tech: (typeof technologies)[0]; index: numb
 
 export default function Capabilities() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const trackRef  = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const [trackReady, setTrackReady] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Horizontal scroll parallax
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const trackX = useTransform(scrollYProgress, [0, 1], [80, -80]);
-  const smoothX = useSpring(trackX, { stiffness: 60, damping: 20 });
+  // ── Mobile detection ─────────────────────────────────────────────────────────
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
+  // ── Desktop: GSAP pin + scroll-driven horizontal drag ────────────────────────
   useEffect(() => {
     const section = sectionRef.current;
-    const track = trackRef.current;
-    if (!section || !track) return;
-
-    setTrackReady(true);
+    const track   = trackRef.current;
+    if (!section || !track || isMobile) return;
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -140,7 +138,6 @@ export default function Capabilities() {
         }
       );
 
-      // Horizontal drag scroll
       const totalScroll = track.scrollWidth - window.innerWidth + 100;
       gsap.to(track, {
         x: -totalScroll,
@@ -157,8 +154,127 @@ export default function Capabilities() {
     }, section);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
+  // ── Mobile: heading fade-in via IntersectionObserver ────────────────────────
+  useEffect(() => {
+    if (!isMobile) return;
+    const heading = headingRef.current;
+    if (!heading) return;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          heading.style.opacity = "1";
+          heading.style.transform = "translateY(0)";
+        }
+      },
+      { threshold: 0.3 }
+    );
+    obs.observe(heading);
+    return () => obs.disconnect();
+  }, [isMobile]);
+
+  // ── Mobile: touch swipe on the track ────────────────────────────────────────
+  useEffect(() => {
+    if (!isMobile) return;
+    const track = trackRef.current;
+    if (!track) return;
+
+    let startX = 0;
+    let startScrollLeft = 0;
+    let isDragging = false;
+
+    const onTouchStart = (e: TouchEvent) => {
+      startX = e.touches[0].clientX;
+      startScrollLeft = track.scrollLeft;
+      isDragging = true;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!isDragging) return;
+      const dx = startX - e.touches[0].clientX;
+      track.scrollLeft = startScrollLeft + dx;
+    };
+
+    const onTouchEnd = () => {
+      isDragging = false;
+    };
+
+    track.addEventListener("touchstart", onTouchStart, { passive: true });
+    track.addEventListener("touchmove",  onTouchMove,  { passive: true });
+    track.addEventListener("touchend",   onTouchEnd,   { passive: true });
+
+    return () => {
+      track.removeEventListener("touchstart", onTouchStart);
+      track.removeEventListener("touchmove",  onTouchMove);
+      track.removeEventListener("touchend",   onTouchEnd);
+    };
+  }, [isMobile]);
+
+  // ── MOBILE RENDER ─────────────────────────────────────────────────────────────
+  if (isMobile) {
+    return (
+      <section ref={sectionRef} className="relative py-20 overflow-hidden">
+        <h2
+          ref={headingRef}
+          className="font-aquire text-3xl font-black mb-10 px-6 text-center"
+          style={{
+            opacity: 0,
+            transform: "translateY(40px)",
+            transition: "opacity 0.8s ease, transform 0.8s ease",
+          }}
+        >
+          Technical <span className="text-red-500">Stack</span>
+        </h2>
+
+        {/* Horizontally scrollable + swipeable track */}
+        <div
+          ref={trackRef}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            paddingLeft: "24px",
+            paddingRight: "24px",
+            overflowX: "auto",
+            overflowY: "hidden",
+            scrollSnapType: "x mandatory",
+            WebkitOverflowScrolling: "touch",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
+          className="[&::-webkit-scrollbar]:hidden"
+        >
+          {technologies.map((tech, i) => (
+            <div
+              key={tech.name}
+              className="relative flex-shrink-0 flex items-center"
+              style={{ scrollSnapAlign: "start" }}
+            >
+              <TechCard tech={tech} index={i} />
+              {i < technologies.length - 1 && (
+                <div
+                  className="w-6 h-[1px] flex-shrink-0"
+                  style={{
+                    background: `linear-gradient(to right, rgba(${SCARLET_RGB},0.4), transparent)`,
+                  }}
+                  aria-hidden="true"
+                />
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Swipe hint */}
+        <p className="text-center text-white/20 text-[10px] tracking-widest uppercase mt-6">
+          Swipe to explore
+        </p>
+      </section>
+    );
+  }
+
+  // ── DESKTOP RENDER ────────────────────────────────────────────────────────────
   return (
     <section ref={sectionRef} className="relative overflow-hidden">
       <div className="h-screen flex flex-col justify-center">
@@ -176,7 +292,6 @@ export default function Capabilities() {
           {technologies.map((tech, i) => (
             <div key={tech.name} className="relative flex-shrink-0 flex items-center">
               <TechCard tech={tech} index={i} />
-              {/* Connector line between cards */}
               {i < technologies.length - 1 && (
                 <div
                   className="w-6 h-[1px] flex-shrink-0"
