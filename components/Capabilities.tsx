@@ -218,7 +218,7 @@ export default function Capabilities() {
       <section ref={sectionRef} className="relative py-20 overflow-hidden">
         <h2
           ref={headingRef}
-          className="font-aquire text-3xl font-black mb-10 px-6 text-center"
+          className="font-zanie text-3xl font-black mb-10 px-6 text-center"
           style={{
             opacity: 0,
             transform: "translateY(40px)",
@@ -280,7 +280,7 @@ export default function Capabilities() {
       <div className="h-screen flex flex-col justify-center">
         <h2
           ref={headingRef}
-          className="font-aquire text-3xl md:text-5xl font-black mb-16 px-6 md:px-20 opacity-0 text-center"
+          className="font-zanie text-3xl md:text-5xl font-black mb-16 px-6 md:px-20 opacity-0 text-center"
         >
           Technical <span className="text-red-500">Stack</span>
         </h2>

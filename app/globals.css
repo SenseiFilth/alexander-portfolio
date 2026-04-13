@@ -52,6 +52,19 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "ZanieBrovia";
+  src: url("/fonts/zanie-brovia-tall-thin-logo-font/ZanieBroviaTallThinLogo-PVEpZ.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-zanie {
+  font-family: "ZanieBrovia", sans-serif;
+  letter-spacing: 0.04em;
+}
+
 .font-cs {
   font-family: "CounterStrike", sans-serif;
   letter-spacing: 0.02em;
