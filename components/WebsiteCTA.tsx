@@ -61,7 +61,7 @@ export default function WebsiteCTA() {
           <p className="text-xs tracking-[0.4em] uppercase text-red-500/60 mb-4">
             Reserve a Custom Website
           </p>
-          <h2 className="font-zanie text-3xl md:text-5xl font-black">
+          <h2 className="font-aquire text-3xl md:text-5xl font-black">
             <span className="block md:inline">Want a site </span>
             <span className="block md:inline text-red-500 text-glow-red">like this?</span>
           </h2>
