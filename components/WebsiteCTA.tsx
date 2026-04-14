@@ -65,9 +65,6 @@ export default function WebsiteCTA() {
             <span className="block md:inline">Want a site </span>
             <span className="block md:inline text-red-500 text-glow-red">like this?</span>
           </h2>
-          <p className="mt-4 text-white/40 font-light max-w-lg mx-auto text-base md:text-lg tracking-widest uppercase">
-            Craft your premium digital experience today
-          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

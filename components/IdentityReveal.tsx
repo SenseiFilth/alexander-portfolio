@@ -327,7 +327,8 @@ export default function IdentityReveal() {
           >
             Creative Technologist{" "}
             <span className="text-red-500/60">·</span> Full Stack{" "}
-            <span className="text-red-500/60">·</span> AI Consultation
+            <br className="block md:hidden" />
+            AI Consultation
           </p>
 
           {/* Contact cards — always in DOM to prevent layout shift */}
