@@ -9,20 +9,20 @@ const UPWORK_URL =
 const tiers = [
   {
     name: "Starter",
-    price: "$150",
+    price: "$250",
     label: "Clean Personal Website",
     description: "Modern website with animations and responsive design",
   },
   {
     name: "Standard",
-    price: "$350",
+    price: "$500",
     label: "Interactive Dynamic Website",
     description: "Animated website with interactive sections and smooth UX",
     featured: true,
   },
   {
     name: "Advanced",
-    price: "$750",
+    price: "$1,000",
     label: "High-End Cinematic Website",
     description: "Premium animated portfolio with custom interactions and branding",
   },
