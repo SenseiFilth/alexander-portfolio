@@ -12,12 +12,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ─── Brand scarlet ────────────────────────────────────────────────────────────
+// ─── Brand scarlet ────────────────────────────────────────────────────────
 const SCARLET = "#9B1C1C";
 const SCARLET_BRIGHT = "#DC2626";
 const SCARLET_RGB = "155,28,28";
 
-// ─── Card data ────────────────────────────────────────────────────────────────
+// ─── Card data ─────────────────────────────────────────────────────────
 const CARDS = [
   {
     label: "Email",
@@ -25,8 +25,16 @@ const CARDS = [
     href: "mailto:brown.alexander10133@gmail.com",
     bg: "/contact-bg/card-1.png",
     icon: (
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        width="36"
+        height="36"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <rect x="2" y="4" width="20" height="16" rx="2" />
         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
       </svg>
@@ -38,9 +46,17 @@ const CARDS = [
     href: "tel:+17047266470",
     bg: "/contact-bg/card-2.png",
     icon: (
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3 2.18H6a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.4[...]
+      <svg
+        width="36"
+        height="36"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3 2.18H6a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.4 2.1l-.95 1.42a16.04 16.04 0 0 0 5.06 5.06l1.42-.95a2 2 0 0 1 2.1-.4 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3z" />
       </svg>
     ),
   },
@@ -51,7 +67,7 @@ const CARDS = [
     bg: "/contact-bg/card-3.png",
     icon: (
       <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539[...]
+        <path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539 0-4.68 1.457-5.731 3.901-.168.464-.04 1.057.359 1.203.404.155.994-.036 1.159-.498.607-1.658 2.026-2.85 3.787-2.85 1.268 0 2.347.501 3.149 1.475l-1.403 1.415a.68.68 0 0 0 0 .988.68.68 0 0 0 .984 0l3.632-3.671a.68.68 0 0 0 0-.988C21.772 5.41 20.555 4.841 18.561 5.018zm0 4.633c-.734 0-1.333-.599-1.333-1.336 0-.737.599-1.336 1.333-1.336s1.333.599 1.333 1.336c0 .737-.599 1.336-1.333 1.336z" />
       </svg>
     ),
   },
@@ -62,7 +78,7 @@ const CARDS = [
     bg: "/contact-bg/card-4.png",
     icon: (
       <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.[...]
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
       </svg>
     ),
   },
@@ -215,7 +231,7 @@ function ContactCard({
   );
 }
 
-// ─── Section ────────────────────────────────────────────────────────────────────
+// ─── Section ──────────────────────────────────────────────────────────
 export default function IdentityReveal() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
